@@ -9,8 +9,8 @@ class QuestionModel {
 
   factory QuestionModel.fromFirestore(doc) {
     return QuestionModel(
-      question: doc["question"],
-      answer: doc["answer"],
+      question: doc["question from question class"],
+      answer: doc["answer from answer class"],
     );
   }
 }
