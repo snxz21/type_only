@@ -1,7 +1,9 @@
-class userProfile {
+class UserProfile {
   // field
-  String userNameAndLogin;
-  String userPassword;
+  String firstName;
+  String lastName;
+  String email;
+  String userStatus;
 
   // function
   void disp() {

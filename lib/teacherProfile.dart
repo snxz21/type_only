@@ -1,7 +1,7 @@
 class teacherProfile {
   // field
-  String teacherNameAndLogin;
-  String teacherPassword;
+  String TeacherNameAndLogin;
+  String TeacherPassword;
 
   // function
   void disp() {
