@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:editing_check/studentTimeExpiredScreen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'UniqueIdScreen.dart';
 
@@ -22,6 +23,10 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
   int oldLen = 0; // nachalnaya  ustanowka schetchika proverki copy/paste
   int minLen = 16; //
   int maxLen = 500; // maximalnaya dlina tekstovogo wwoda
+  String message = "";
+  bool isShow = false;
+
+
   @override
   void initState() {
     super.initState();
@@ -33,24 +38,86 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
         _second = _counter - (_minute * 60);
         if (_minute == 0 && _second == 0) {
           timer.cancel();
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => StudentTimeExpiredScreen()),
-          );
+
+          isEnable = false;
+          endButton();
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => StudentTimeExpiredScreen()),
+          // );
 
           //esli wremya zakonchilos to taimer ostanavlivaetsya
           // timer.cancel();
         }
       });
     });
-    Future.delayed(Duration(seconds: _counter), () {
-      Navigator.pop(context);
-    });
+    // Future.delayed(Duration(seconds: _counter), () {
+    //   Navigator.pop(context);
+    // });
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  var endBtn = FloatingActionButton.extended(onPressed: () {}, label: Text(""));
+
+  endButton({isPaste}) {
+    if (uniqueAnswerController.text.length > 10) {
+      setState(() {
+        isShow = true;
+        if (message == "" && _counter == 0) message = 'Sorry your time is expired to answer this question';
+        endBtn = FloatingActionButton.extended(
+          //Knopka "Submit"
+          backgroundColor: Colors.black,
+          shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (_) {
+              return StudentEntryForm();
+            }));
+          },
+          label: Text("Submit"),
+        );
+      });
+    }  if (_counter == 0) {
+      setState(() {
+        isShow = true;
+        isEnable = false;
+        if (message == "") message = 'Sorry your time is expired to answer this question';
+        endBtn = FloatingActionButton.extended(
+          //Knopka "Submit"
+          backgroundColor: Colors.black,
+          shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+          onPressed: () {
+            Navigator.pop(context);
+            // Navigator.push(context, MaterialPageRoute(builder: (_) {
+            //   return StudentEntryForm();
+            // }));
+          },
+          label: Text("Answer Again"),
+        );
+      });
+    }  if (isPaste != null) {
+      print("yeap");
+      setState(() {
+        _counter = 1;
+        message = 'Sorry, you pasted text from buffer but it is not allowed! Please start typing your answer again!';
+        isEnable = false;
+        endBtn = FloatingActionButton.extended(
+          //Knopka "Submit"
+          backgroundColor: Colors.black,
+          shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (_) {
+              return StudentEntryForm();
+            }));
+          },
+          label: Text("Answer Again"),
+        );
+      });
+    }
+    // endBtn = FloatingActionButton.extended(onPressed: (){}, label: Text(""));
   }
 
   @override
@@ -86,10 +153,8 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
                   ),
                   borderRadius: BorderRadius.circular(1.0),
                 ),
-                child: Center(
-                  child: Text(
-                      'What is Apoptosis sdfhgsdfgsdfgsdfgsdfgsdfgds ?'), //text voprosa po sootvetstvuyushemu ID
-                ),
+                alignment: Alignment.center,
+                child: Text('What is Apoptosis sdfhgsdfgsdfgsdfgsdfgsdfgds ?'),
               ),
             ),
             Container(width: double.infinity, height: 10),
@@ -97,14 +162,15 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
               padding: const EdgeInsets.fromLTRB(10, 1, 10, 5),
               child: Row(
                 children: [
-                  Text(
-                      'Time left $_minute minutes : $_second seconds'), // soobshenie na ekrane schetchika vremeni
+                  Text('Time left $_minute minutes : $_second seconds'), // soobshenie na ekrane schetchika vremeni
                 ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 1, 20, 5),
-              child: Flexible(
+              child: Container(
+                width: double.infinity,
+                height: 75,
                 child: TextFormField(
                   //Pole formy wwoda otveta studentom
                   decoration: new InputDecoration(
@@ -117,9 +183,8 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
                       ),
                     ),
                     filled: true,
-                    hintStyle: new TextStyle(color: Colors.black, fontSize: 18),
-                    hintText:
-                        "Type your answer here. Important: Do not use copy/paste! ",
+                    hintStyle: new TextStyle(color: Colors.black38, fontSize: 18),
+                    hintText: "Type your answer here. Important: Do not use copy/paste! ",
                     fillColor: Colors.white,
                   ),
                   enabled: isEnable,
@@ -129,10 +194,9 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
                   maxLines: 15,
                   onChanged: (value) {
                     print(value);
+                    endButton();
                     if (value.length - oldLen > 1) {
-                      setState(() {
-                        isEnable = false;
-                      });
+                      endButton(isPaste: true);
                       print('do not paste');
                     } else {
                       setState(() {
@@ -144,34 +208,20 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
               ),
             ),
             Visibility(
-              visible: !isEnable,
+              visible: isShow,
               child: Container(
                 margin: const EdgeInsets.fromLTRB(10, 1, 5, 5),
                 padding: const EdgeInsets.fromLTRB(10, 1, 5, 5),
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.black)),
-                child: Text(
-                    'Sorry, you pasted text from buffer but it is not allowed! Please start typing your answer again!'),
+                decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+                child: Text(message),
               ),
             ),
             Row(
               children: [
                 Container(width: 10, height: 10),
                 Visibility(
-                  visible: uniqueAnswerController.text.length >
-                      10, //minimalnaya dlina stroki do pokaza knopki "Submit"
-                  child: FloatingActionButton.extended(
-                    //Knopka "Submit"
-                    backgroundColor: Colors.black,
-                    shape:
-                        BeveledRectangleBorder(borderRadius: BorderRadius.zero),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) {
-                        return StudentEntryForm();
-                      }));
-                    },
-                    label: Text("Submit"),
-                  ),
+                  visible: isShow, //minimalnaya dlina stroki do pokaza knopki "Submit"
+                  child: endBtn,
                 ),
               ],
             )

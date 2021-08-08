@@ -1,3 +1,4 @@
+import 'package:editing_check/testScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Student EntryForm.dart';
@@ -88,7 +89,7 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
             //             BeveledRectangleBorder(borderRadius: BorderRadius.zero),
             //         onPressed: () {
             //           Navigator.push(context, MaterialPageRoute(builder: (_) {
-            //             return StudentEntryForm();
+            //             return TeacherEntryForm();
             //           }));
             //         },
             //         label: Text("Submit"),
@@ -97,6 +98,21 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
             //   ],
             // )
           ],
-        ));
+        ),
+    floatingActionButton: FloatingActionButton.extended(
+      backgroundColor: Colors.black,
+      shape:
+      BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+      onPressed: () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) {
+          return TeacherEntryForm();
+          // return StudentEntryForm();
+          // return StudentTimeExpiredScreen();
+
+        }));
+      },
+      label: Text("TestScreen"),
+    ),
+    );
   }
 }
