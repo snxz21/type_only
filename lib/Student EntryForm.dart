@@ -26,7 +26,6 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
   String message = "";
   bool isShow = false;
 
-
   @override
   void initState() {
     super.initState();
@@ -67,7 +66,8 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
     if (uniqueAnswerController.text.length > 10) {
       setState(() {
         isShow = true;
-        if (message == "" && _counter == 0) message = 'Sorry your time is expired to answer this question';
+        if (message == "" && _counter == 0)
+          message = 'Sorry your time is expired to answer this question';
         endBtn = FloatingActionButton.extended(
           //Knopka "Submit"
           backgroundColor: Colors.black,
@@ -80,11 +80,13 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
           label: Text("Submit"),
         );
       });
-    }  if (_counter == 0) {
+    }
+    if (_counter == 0) {
       setState(() {
         isShow = true;
         isEnable = false;
-        if (message == "") message = 'Sorry your time is expired to answer this question';
+        if (message == "")
+          message = 'Sorry your time is expired to answer this question';
         endBtn = FloatingActionButton.extended(
           //Knopka "Submit"
           backgroundColor: Colors.black,
@@ -98,11 +100,13 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
           label: Text("Answer Again"),
         );
       });
-    }  if (isPaste != null) {
+    }
+    if (isPaste != null) {
       print("yeap");
       setState(() {
         _counter = 1;
-        message = 'Sorry, you pasted text from buffer but it is not allowed! Please start typing your answer again!';
+        message =
+            'Sorry, you pasted text from buffer but it is not allowed! Please start typing your answer again!';
         isEnable = false;
         endBtn = FloatingActionButton.extended(
           //Knopka "Submit"
@@ -162,7 +166,8 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
               padding: const EdgeInsets.fromLTRB(10, 1, 10, 5),
               child: Row(
                 children: [
-                  Text('Time left $_minute minutes : $_second seconds'), // soobshenie na ekrane schetchika vremeni
+                  Text(
+                      'Time left $_minute minutes : $_second seconds'), // soobshenie na ekrane schetchika vremeni
                 ],
               ),
             ),
@@ -183,8 +188,10 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
                       ),
                     ),
                     filled: true,
-                    hintStyle: new TextStyle(color: Colors.black38, fontSize: 18),
-                    hintText: "Type your answer here. Important: Do not use copy/paste! ",
+                    hintStyle:
+                        new TextStyle(color: Colors.black38, fontSize: 18),
+                    hintText:
+                        "Type your answer here. Important: Do not use copy/paste! ",
                     fillColor: Colors.white,
                   ),
                   enabled: isEnable,
@@ -212,7 +219,8 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
               child: Container(
                 margin: const EdgeInsets.fromLTRB(10, 1, 5, 5),
                 padding: const EdgeInsets.fromLTRB(10, 1, 5, 5),
-                decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+                decoration:
+                    BoxDecoration(border: Border.all(color: Colors.black)),
                 child: Text(message),
               ),
             ),
@@ -220,50 +228,13 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
               children: [
                 Container(width: 10, height: 10),
                 Visibility(
-                  visible: isShow, //minimalnaya dlina stroki do pokaza knopki "Submit"
+                  visible:
+                      isShow, //minimalnaya dlina stroki do pokaza knopki "Submit"
                   child: endBtn,
                 ),
               ],
             )
           ],
         ));
-  }
-}
-
-class StudentTimeExpiredScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('TypeOnly'),
-        centerTitle: true,
-      ),
-      body: Column(
-        verticalDirection: VerticalDirection.down,
-        children: [
-          Container(width: double.infinity, height: 100),
-          Text('Sorry your time is expired to answer this question',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              )),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
-            child: FloatingActionButton.extended(
-              backgroundColor: Colors.black,
-              shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
-              onPressed: () {
-                // ignore: missing_return
-                Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return UniqueIdScreen();
-                }));
-              },
-              label: Text("Answer Again"),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
