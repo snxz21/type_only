@@ -65,6 +65,7 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
                 ),
                 child: FloatingActionButton.extended(
                   backgroundColor: Colors.black,
+                  heroTag: "submit id",
                   shape:
                       BeveledRectangleBorder(borderRadius: BorderRadius.zero),
                   onPressed: () {

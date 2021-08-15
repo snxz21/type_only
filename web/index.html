@@ -34,24 +34,23 @@
   <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-storage.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-database.js"></script>
 
-  <script>
+      <script>
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
       var firebaseConfig = {
-          apiKey: "AIzaSyDBdaa5zxNFtg8psEFz7zqSMl88qjQgnZU",
-          authDomain: "project1-alex.firebaseapp.com",
-          projectId: "project1-alex",
-          storageBucket: "project1-alex.appspot.com",
-          messagingSenderId: "1044208084409",
-          appId: "1:1044208084409:web:3640c3f6a20b77e6154268",
-          measurementId: "G-QW0CE0TTZ8"
+        apiKey: "AIzaSyDBdaa5zxNFtg8psEFz7zqSMl88qjQgnZU",
+        authDomain: "project1-alex.firebaseapp.com",
+        projectId: "project1-alex",
+        storageBucket: "project1-alex.appspot.com",
+        messagingSenderId: "1044208084409",
+        appId: "1:1044208084409:web:f9cdba1e543ee925154268",
+        measurementId: "G-H34Q0E2L0F"
       };
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
-
-
-
-</script>
+      firebase.analytics();
+    </script>
   <script>
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
