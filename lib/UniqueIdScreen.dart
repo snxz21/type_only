@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:editing_check/TeacherEntryForm.dart';
+import 'package:editing_check/questionModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Student EntryForm.dart';
@@ -11,6 +12,7 @@ class UniqueIdScreen extends StatefulWidget {
 
 class _UniqueIdScreenState extends State<UniqueIdScreen> {
   TextEditingController uniqueId = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,8 +24,7 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
         verticalDirection: VerticalDirection.down,
         children: [
           Container(width: double.infinity, height: 100),
-          Text(
-              'PASTE UNIQUE  QUESTION ID# (you can find it in the message from your teacher)',
+          Text('PASTE UNIQUE  QUESTION ID# (you can find it in the message from your teacher)',
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
@@ -51,8 +52,7 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
                         ),
                       ),
                       filled: true,
-                      hintStyle:
-                          new TextStyle(color: Colors.grey[800], fontSize: 18),
+                      hintStyle: new TextStyle(color: Colors.grey[800], fontSize: 18),
                       hintText: "Question UNIQUE ID ",
                       fillColor: Colors.white24,
                     ),
@@ -67,30 +67,22 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
                 child: FloatingActionButton.extended(
                   backgroundColor: Colors.black,
                   heroTag: "submit id",
-                  shape:
-                      BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+                  shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
                   onPressed: () async {
-                    await FirebaseFirestore.instance
-                        .collection("Tests")
-                        .doc(uniqueId.text)
-                        .get()
-                        .then((value) {
-                      for (int i = 0; i < value.docs.length; i++) {
-                        setState(() {
-                          QuestionModel(
-
-                            docID: value.docs[i].id,
-                            question: value.docs[i].data()["question"],
-                            time: value.docs[i].data()["time"],
-                            maxLen: value.docs[i].data()["maxLen"],
-                            minLen: value.docs[i].data()["minLen"],
-                          ));
-                        });
-                      }
+                    QuestionModel myQuestion = QuestionModel();
+                    await FirebaseFirestore.instance.collection("Tests").doc(uniqueId.text).get().then((value) {
+                      myQuestion =  QuestionModel(
+                        docID: value.id,
+                        question: value.data()["question"],
+                        time: value.data()["time"],
+                        maxLen: value.data()["maxLen"],
+                        minLen: value.data()["minLen"],
+                        listOfStudents: value.data()["ListOfStudents"] ?? [],
+                      );
                     });
 
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return StudentEntryForm();
+                      return StudentEntryForm(myQuestion);
                     }));
                   },
                   label: Text("Submit"),

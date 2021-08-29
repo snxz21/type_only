@@ -1,6 +1,7 @@
 class QuestionModel {
   final String docID;
   final String question;
+  final List<dynamic> listOfStudents;
   final int maxLen;
   final int minLen;
   final int time;
@@ -11,6 +12,7 @@ class QuestionModel {
     this.maxLen = 0,
     this.minLen = 0,
     this.time = 0,
+    this.listOfStudents,
   });
   //
   // factory QuestionModel.fromFirestore(doc) {
