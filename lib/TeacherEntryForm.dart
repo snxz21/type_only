@@ -312,8 +312,8 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                       shape: BeveledRectangleBorder(
                                           borderRadius: BorderRadius.zero),
                                       onPressed: () async {},
-                                      label: Text('Delete Question and Answers',
-                                          textScaleFactor: 0.5),
+                                      label: Text('Delete Question',
+                                          textScaleFactor: 0.7),
                                     ),
                                   ),
                                   SizedBox(
@@ -328,8 +328,8 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                           borderRadius: BorderRadius.zero),
                                       onPressed: () async {},
                                       label: Text(
-                                        'View and Grade Answers',
-                                        textScaleFactor: 0.5,
+                                        'Grade Answers',
+                                        textScaleFactor: 0.7,
                                       ),
                                     ),
                                   ),
