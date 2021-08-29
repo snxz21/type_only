@@ -234,7 +234,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                         ])))),
             Container(
               width: MediaQuery.of(context).size.width * 0.95,
-              height: 450,
+              height: 500,
               child: ListView.builder(
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
@@ -313,7 +313,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                           borderRadius: BorderRadius.zero),
                                       onPressed: () async {},
                                       label: Text('Delete Question',
-                                          textScaleFactor: 0.7),
+                                          textScaleFactor: 0.6),
                                     ),
                                   ),
                                   SizedBox(
@@ -329,7 +329,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                       onPressed: () async {},
                                       label: Text(
                                         'Grade Answers',
-                                        textScaleFactor: 0.7,
+                                        textScaleFactor: 0.6,
                                       ),
                                     ),
                                   ),

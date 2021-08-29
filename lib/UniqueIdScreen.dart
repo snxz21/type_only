@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:editing_check/TeacherEntryForm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,26 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
                   heroTag: "submit id",
                   shape:
                       BeveledRectangleBorder(borderRadius: BorderRadius.zero),
-                  onPressed: () {
+                  onPressed: () async {
+                    await FirebaseFirestore.instance
+                        .collection("Tests")
+                        .doc(uniqueId.text)
+                        .get()
+                        .then((value) {
+                      for (int i = 0; i < value.docs.length; i++) {
+                        setState(() {
+                          QuestionModel(
+
+                            docID: value.docs[i].id,
+                            question: value.docs[i].data()["question"],
+                            time: value.docs[i].data()["time"],
+                            maxLen: value.docs[i].data()["maxLen"],
+                            minLen: value.docs[i].data()["minLen"],
+                          ));
+                        });
+                      }
+                    });
+
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
                       return StudentEntryForm();
                     }));
