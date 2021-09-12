@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'gradingScreen.dart';
+
 class TeacherEntryForm extends StatefulWidget {
   @override
   _TeacherEntryFormState createState() => _TeacherEntryFormState();
@@ -44,6 +46,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
         });
       }
     });
+    myQestionList.sort((a, b) => b.timeCreated.compareTo(a.timeCreated));
   }
 
   @override
@@ -236,138 +239,160 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                             ],
                           ),
                         ])))),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.95,
-              height: 500,
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemCount: myQestionList.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text("Test unique ID: " +
-                                      myQestionList[index].docID),
-                                  SizedBox(
-                                    width: 50.0,
-                                  ),
-                                  Container(
-                                    width: 80,
-                                    height: 30,
-                                    child: FloatingActionButton.extended(
-                                      backgroundColor: Colors.black,
-                                      shape: BeveledRectangleBorder(
-                                          borderRadius: BorderRadius.zero),
-                                      onPressed: () async {
-                                        Clipboard.setData(new ClipboardData(
-                                            text: myQestionList[index].docID));
-                                        Scaffold.of(context).showSnackBar(
-                                            SnackBar(
-                                                content: Text('text copied')));
-                                      },
-                                      label: Column(
-                                        children: [
-                                          Text(
-                                            'Copy question',
-                                            textScaleFactor: 0.6,
+            myQestionList.length == 0
+                ? CircularProgressIndicator()
+                : Container(
+                    width: MediaQuery.of(context).size.width * 0.95,
+                    height: 500,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: myQestionList.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text("Test unique ID: " +
+                                            myQestionList[index].docID),
+                                        SizedBox(
+                                          width: 50.0,
+                                        ),
+                                        Container(
+                                          width: 80,
+                                          height: 30,
+                                          child: FloatingActionButton.extended(
+                                            backgroundColor: Colors.black,
+                                            shape: BeveledRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.zero),
+                                            onPressed: () async {
+                                              Clipboard.setData(
+                                                  new ClipboardData(
+                                                      text: myQestionList[index]
+                                                          .docID));
+                                              Scaffold.of(context).showSnackBar(
+                                                  SnackBar(
+                                                      content:
+                                                          Text('text copied')));
+                                            },
+                                            label: Column(
+                                              children: [
+                                                Text(
+                                                  'Copy question',
+                                                  textScaleFactor: 0.6,
+                                                ),
+                                                Text(
+                                                  'Unique ID#',
+                                                  textScaleFactor: 0.6,
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                          Text(
-                                            'Unique ID#',
-                                            textScaleFactor: 0.6,
-                                          ),
-                                        ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 10.0,
+                                    ),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.black,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(1.0),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: Text("Text of Question: " +
+                                            myQestionList[index].question),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.black,
-                                  ),
-                                  borderRadius: BorderRadius.circular(1.0),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: Text("Text of Question: " +
-                                      myQestionList[index].question),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Row(
-                                children: [
-                                  Text("Time: " +
-                                      myQestionList[index].time.toString()),
-                                  Text("MinLen: " +
-                                      myQestionList[index].minLen.toString()),
-                                  Text("MaxLen: " +
-                                      myQestionList[index].maxLen.toString()),
-                                  SizedBox(
-                                    width: 20.0,
-                                  ),
-                                  Spacer(),
-                                  Container(
-                                    width: 80,
-                                    height: 30,
-                                    child: FloatingActionButton.extended(
-                                      backgroundColor: Colors.black,
-                                      shape: BeveledRectangleBorder(
-                                          borderRadius: BorderRadius.zero),
-                                      onPressed: () async {
-                                        db
-                                            .collection('Tests')
-                                            .doc(myQestionList[index].docID)
-                                            .delete();
-                                        getQuestionList();
-                                      },
-                                      label: Text('Delete Question',
-                                          textScaleFactor: 0.6),
+                                    SizedBox(
+                                      height: 10.0,
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 20.0,
-                                  ),
-                                  Container(
-                                    width: 80,
-                                    height: 30,
-                                    child: FloatingActionButton.extended(
-                                      backgroundColor: Colors.black,
-                                      shape: BeveledRectangleBorder(
-                                          borderRadius: BorderRadius.zero),
-                                      onPressed: () async {},
-                                      label: Text(
-                                        'Grade Answers',
-                                        textScaleFactor: 0.6,
-                                      ),
+                                    Row(
+                                      children: [
+                                        Text("Time: " +
+                                            myQestionList[index]
+                                                .time
+                                                .toString()),
+                                        Text("MinLen: " +
+                                            myQestionList[index]
+                                                .minLen
+                                                .toString()),
+                                        Text("MaxLen: " +
+                                            myQestionList[index]
+                                                .maxLen
+                                                .toString()),
+                                        SizedBox(
+                                          width: 20.0,
+                                        ),
+                                        Spacer(),
+                                        Container(
+                                          width: 80,
+                                          height: 30,
+                                          child: FloatingActionButton.extended(
+                                            backgroundColor: Colors.black,
+                                            shape: BeveledRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.zero),
+                                            onPressed: () async {
+                                              db
+                                                  .collection('Tests')
+                                                  .doc(myQestionList[index]
+                                                      .docID)
+                                                  .delete();
+                                              getQuestionList();
+                                            },
+                                            label: Text('Delete Question',
+                                                textScaleFactor: 0.6),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 20.0,
+                                        ),
+                                        Container(
+                                          width: 80,
+                                          height: 30,
+                                          child: FloatingActionButton.extended(
+                                            backgroundColor: Colors.black,
+                                            shape: BeveledRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.zero),
+                                            onPressed: () async {
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) {
+                                                return GradingScreen();
+                                              }));
+                                            },
+                                            label: Text(
+                                              'Grade Answers',
+                                              textScaleFactor: 0.6,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-            ),
+                  ),
           ])),
     );
   }
