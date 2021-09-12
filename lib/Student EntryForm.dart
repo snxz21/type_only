@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:toast/toast.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:editing_check/questionModel.dart';
@@ -75,19 +76,23 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
     if (uniqueAnswerController.text.length > 10) {
       setState(() {
         isShow = true;
-        if (message == "" && _counter == 0) message = 'Sorry your time is expired to answer this question';
+        if (message == "" && _counter == 0)
+          message = 'Sorry your time is expired to answer this question';
         endBtn = FloatingActionButton.extended(
           //Knopka "Submit"
           backgroundColor: Colors.black,
           shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
           onPressed: () {
-           setState(() {
-             _minute = 0;
-             _second = 0;
-           });
+            setState(() {
+              _minute = 0;
+              _second = 0;
+            });
             List<dynamic> tmpStudentsId = widget.myQuestion.listOfStudents;
             tmpStudentsId.add("tmpStudentsId_${Random().nextInt(5000)}");
-            FirebaseFirestore.instance.collection("Tests").doc(widget.myQuestion.docID).update({
+            FirebaseFirestore.instance
+                .collection("Tests")
+                .doc(widget.myQuestion.docID)
+                .update({
               "ListOfStudents": tmpStudentsId,
             });
             // /users/uid_1/answers/1aDHnkobaejfZ95Ysvz0
@@ -102,6 +107,8 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
             });
 
             Navigator.pop(context);
+            Toast.show("You have submitted answer!", context,
+                duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
             // Navigator.push(context, MaterialPageRoute(builder: (_) {
             //   return StudentEntryForm(widget.myQuestion);
             // }));
@@ -114,7 +121,8 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
       setState(() {
         isShow = true;
         isEnable = false;
-        if (message == "") message = 'Sorry your time is expired to answer this question';
+        if (message == "")
+          message = 'Sorry your time is expired to answer this question';
         endBtn = FloatingActionButton.extended(
           //Knopka "Submit"
           backgroundColor: Colors.black,
@@ -194,7 +202,8 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
               padding: const EdgeInsets.fromLTRB(10, 1, 10, 5),
               child: Row(
                 children: [
-                  Text('Time left $_minute minutes : $_second seconds'), // soobshenie na ekrane schetchika vremeni
+                  Text(
+                      'Time left $_minute minutes : $_second seconds'), // soobshenie na ekrane schetchika vremeni
                 ],
               ),
             ),
@@ -215,8 +224,10 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
                       ),
                     ),
                     filled: true,
-                    hintStyle: new TextStyle(color: Colors.black38, fontSize: 18),
-                    hintText: "Type your answer here. Important: Do not use copy/paste! ",
+                    hintStyle:
+                        new TextStyle(color: Colors.black38, fontSize: 18),
+                    hintText:
+                        "Type your answer here. Important: Do not use copy/paste! ",
                     fillColor: Colors.white,
                   ),
                   enabled: isEnable,
@@ -244,7 +255,8 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
               child: Container(
                 margin: const EdgeInsets.fromLTRB(10, 1, 5, 5),
                 padding: const EdgeInsets.fromLTRB(10, 1, 5, 5),
-                decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+                decoration:
+                    BoxDecoration(border: Border.all(color: Colors.black)),
                 child: Text(message),
               ),
             ),
@@ -252,7 +264,8 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
               children: [
                 Container(width: 10, height: 10),
                 Visibility(
-                  visible: isShow, //minimalnaya dlina stroki do pokaza knopki "Submit"
+                  visible:
+                      isShow, //minimalnaya dlina stroki do pokaza knopki "Submit"
                   child: endBtn,
                 ),
               ],

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:editing_check/questionModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TeacherEntryForm extends StatefulWidget {
   @override
@@ -38,6 +39,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
             time: value.docs[i].data()["time"],
             maxLen: value.docs[i].data()["maxLen"],
             minLen: value.docs[i].data()["minLen"],
+            timeCreated: value.docs[i].data()['TimeCreated'] ?? 1,
           ));
         });
       }
@@ -224,6 +226,8 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                         "maxLen":
                                             int.parse(_maxLenController.text),
                                         "time": int.parse(_timeController.text),
+                                        "TimeCreated": DateTime.now()
+                                            .millisecondsSinceEpoch
                                       });
                                       getQuestionList();
                                     },
@@ -250,7 +254,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                             children: [
                               Row(
                                 children: [
-                                  Text("Test uniq ID: " +
+                                  Text("Test unique ID: " +
                                       myQestionList[index].docID),
                                   SizedBox(
                                     width: 50.0,
@@ -262,10 +266,24 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                       backgroundColor: Colors.black,
                                       shape: BeveledRectangleBorder(
                                           borderRadius: BorderRadius.zero),
-                                      onPressed: () async {},
-                                      label: Text(
-                                        'Copy Link',
-                                        textScaleFactor: 0.8,
+                                      onPressed: () async {
+                                        Clipboard.setData(new ClipboardData(
+                                            text: myQestionList[index].docID));
+                                        Scaffold.of(context).showSnackBar(
+                                            SnackBar(
+                                                content: Text('text copied')));
+                                      },
+                                      label: Column(
+                                        children: [
+                                          Text(
+                                            'Copy question',
+                                            textScaleFactor: 0.6,
+                                          ),
+                                          Text(
+                                            'Unique ID#',
+                                            textScaleFactor: 0.6,
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -311,7 +329,13 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                       backgroundColor: Colors.black,
                                       shape: BeveledRectangleBorder(
                                           borderRadius: BorderRadius.zero),
-                                      onPressed: () async {},
+                                      onPressed: () async {
+                                        db
+                                            .collection('Tests')
+                                            .doc(myQestionList[index].docID)
+                                            .delete();
+                                        getQuestionList();
+                                      },
                                       label: Text('Delete Question',
                                           textScaleFactor: 0.6),
                                     ),
@@ -346,24 +370,5 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
             ),
           ])),
     );
-    //         Padding(
-    //           padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 0),
-    //           child: Container(
-    //             width: MediaQuery.of(context).size.width,
-    //             height: 40,
-    //             decoration: BoxDecoration(
-    //               border: Border.all(
-    //                 color: Colors.black,
-    //               ),
-    //               borderRadius: BorderRadius.circular(1.0),
-    //             ),
-    //             child: Padding(
-    //               padding: const EdgeInsets.all(2.0),
-    //               child: Text("What is Apoptosis? "),
-    //             ),
-    //           ),
-    //         ),
-    //       ]),
-    // ));
   }
 }

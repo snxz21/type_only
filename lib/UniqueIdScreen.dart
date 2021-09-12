@@ -4,6 +4,7 @@ import 'package:editing_check/questionModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Student EntryForm.dart';
+import 'gradingScreen.dart';
 
 class UniqueIdScreen extends StatefulWidget {
   @override
@@ -24,7 +25,8 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
         verticalDirection: VerticalDirection.down,
         children: [
           Container(width: double.infinity, height: 100),
-          Text('PASTE UNIQUE  QUESTION ID# (you can find it in the message from your teacher)',
+          Text(
+              'PASTE UNIQUE  QUESTION ID# (you can find it in the message from your teacher)',
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
@@ -52,7 +54,8 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
                         ),
                       ),
                       filled: true,
-                      hintStyle: new TextStyle(color: Colors.grey[800], fontSize: 18),
+                      hintStyle:
+                          new TextStyle(color: Colors.grey[800], fontSize: 18),
                       hintText: "Question UNIQUE ID ",
                       fillColor: Colors.white24,
                     ),
@@ -67,23 +70,35 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
                 child: FloatingActionButton.extended(
                   backgroundColor: Colors.black,
                   heroTag: "submit id",
-                  shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+                  shape:
+                      BeveledRectangleBorder(borderRadius: BorderRadius.zero),
                   onPressed: () async {
                     QuestionModel myQuestion = QuestionModel();
-                    await FirebaseFirestore.instance.collection("Tests").doc(uniqueId.text).get().then((value) {
-                      myQuestion =  QuestionModel(
+                    await FirebaseFirestore.instance
+                        .collection("Tests")
+                        .doc(uniqueId.text)
+                        .get()
+                        .then((value) {
+                      myQuestion = QuestionModel(
                         docID: value.id,
                         question: value.data()["question"],
                         time: value.data()["time"],
                         maxLen: value.data()["maxLen"],
                         minLen: value.data()["minLen"],
                         listOfStudents: value.data()["ListOfStudents"] ?? [],
+                        timeCreated: value.data()['TimeCreated'] ?? 1,
                       );
                     });
-
-                    Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return StudentEntryForm(myQuestion);
-                    }));
+                    if (myQuestion.listOfStudents
+                        .contains('tmpStudentsId_3002'))
+                      print('ERROR');
+                    else
+                      Navigator.push(context, MaterialPageRoute(builder: (_) {
+                        return StudentEntryForm(myQuestion);
+                      }));
+                    setState(() {
+                      uniqueId.text = '';
+                    });
                   },
                   label: Text("Submit"),
                 ),
@@ -112,17 +127,33 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
           // )
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.black,
-        shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return TeacherEntryForm();
-            // return StudentEntryForm();
-            // return StudentTimeExpiredScreen();
-          }));
-        },
-        label: Text("TestScreen"),
+      floatingActionButton: Row(
+        children: [
+          FloatingActionButton.extended(
+            backgroundColor: Colors.black,
+            shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return TeacherEntryForm();
+                // return StudentEntryForm();
+                // return StudentTimeExpiredScreen();
+              }));
+            },
+            label: Text("TeacherEntryForm"),
+          ),
+          FloatingActionButton.extended(
+            backgroundColor: Colors.black,
+            shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return GradingScreen();
+                // return StudentEntryForm();
+                // return StudentTimeExpiredScreen();
+              }));
+            },
+            label: Text("GradingScreen"),
+          ),
+        ],
       ),
     );
   }
