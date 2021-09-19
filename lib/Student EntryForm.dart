@@ -88,7 +88,8 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
               _second = 0;
             });
             List<dynamic> tmpStudentsId = widget.myQuestion.listOfStudents;
-            tmpStudentsId.add("tmpStudentsId_${Random().nextInt(5000)}");
+            var tempId = "tmpStudentsId_${Random().nextInt(5000)}";
+            tmpStudentsId.add(tempId);
             FirebaseFirestore.instance
                 .collection("Tests")
                 .doc(widget.myQuestion.docID)
@@ -98,7 +99,7 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
             // /users/uid_1/answers/1aDHnkobaejfZ95Ysvz0
             FirebaseFirestore.instance
                 .collection("users")
-                .doc("uid_1")
+                .doc(tempId)
                 .collection("answers")
                 .doc(widget.myQuestion.docID)
                 .set({

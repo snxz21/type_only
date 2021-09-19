@@ -42,6 +42,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
             maxLen: value.docs[i].data()["maxLen"],
             minLen: value.docs[i].data()["minLen"],
             timeCreated: value.docs[i].data()['TimeCreated'] ?? 1,
+            listOfStudents: value.docs[i].data()['ListOfStudents'] ?? [],
           ));
         });
       }
@@ -217,6 +218,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                 width: 100,
                                 height: 40,
                                 child: FloatingActionButton.extended(
+                                  heroTag: "getQuestionList",
                                     backgroundColor: Colors.black,
                                     shape: BeveledRectangleBorder(
                                         borderRadius: BorderRadius.zero),
@@ -373,7 +375,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                               Navigator.push(context,
                                                   MaterialPageRoute(
                                                       builder: (_) {
-                                                return GradingScreen();
+                                                return GradingScreen(myQestionList[index]);
                                               }));
                                             },
                                             label: Text(

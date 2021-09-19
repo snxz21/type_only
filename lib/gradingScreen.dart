@@ -1,15 +1,54 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:editing_check/questionModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class GradingScreen extends StatefulWidget {
+  GradingScreen(this.question);
+
+  final QuestionModel question;
+
   @override
   _GradingScreenState createState() => _GradingScreenState();
 }
 
 class _GradingScreenState extends State<GradingScreen> {
   bool _value = false;
-  int val = -1;
+  // int val = -1;
+  var db = FirebaseFirestore.instance;
+  List<UserAnswerModel> usersAnswers = [];
+
+  @override
+  void initState() {
+    super.initState();
+   Future.delayed(Duration(seconds: 2),(){
+     print(widget.question.listOfStudents);
+     print(widget.question.docID);
+     getAllUsersAnswer(widget.question.listOfStudents, widget.question.docID);
+   });
+  }
+
+  ///users/uid_1/answers/OiosQ1cij9kPSpvxR9g1
+  getAllUsersAnswer(List users, String questionId) async {
+    users.forEach((element) async {
+      await db.collection("users").doc(element).collection("answers").doc(questionId).get().then((value) {
+        setState(() {
+          usersAnswers.add(UserAnswerModel(
+            answer: value.data()["Answer"],
+            timeCreated: value.data()["TimeCreated"],
+            userID: element,
+            mark: value.data()["Mark"] ?? 0,
+          ));
+        });
+      });
+    });
+  setState(() {
+    usersAnswers = usersAnswers.reversed.toList();
+  });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,8 +61,7 @@ class _GradingScreenState extends State<GradingScreen> {
           SizedBox(
             height: 50.0,
           ),
-          Center(
-              child: Text('Students responses to Question  ID #: 12323231234')),
+          Center(child: Text('Students responses to Question  ID #: ${widget.question.docID}')),
           Container(
             width: MediaQuery.of(context).size.width,
             height: 40,
@@ -36,14 +74,14 @@ class _GradingScreenState extends State<GradingScreen> {
             ),
             child: Padding(
               padding: const EdgeInsets.all(2.0),
-              child: Text("What is Apoptosis? "),
+              child: Text(widget.question.question),
             ),
           ),
           Flexible(
             child: ListView.builder(
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
-                itemCount: 10,
+                itemCount: usersAnswers.length,
                 itemBuilder: (context, index) {
                   return Container(
                     width: MediaQuery.of(context).size.width * 0.95,
@@ -57,8 +95,7 @@ class _GradingScreenState extends State<GradingScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
-                                'Answer from student: John Smith; email: jsmith@gmail.com; submitted:14/12/21 at 23:00'),
+                            Text('Answer from student: ${usersAnswers[index].userID}; email: jsmith@gmail.com; submitted:${usersAnswers[index].timeCreated}'),
                             SizedBox(
                               width: 50.0,
                             ),
@@ -73,8 +110,7 @@ class _GradingScreenState extends State<GradingScreen> {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(2.0),
-                                child: Text(
-                                    "Apoptosis is .... this is the  student answer"),
+                                child: Text("${usersAnswers[index].answer}"),
                               ),
                             ),
                             SizedBox(
@@ -90,10 +126,10 @@ class _GradingScreenState extends State<GradingScreen> {
                                   Text('1'),
                                   Radio(
                                     value: 1,
-                                    groupValue: val,
+                                    groupValue: usersAnswers[index].mark,
                                     onChanged: (value) {
                                       setState(() {
-                                        val = value;
+                                        usersAnswers[index].mark = value;
                                       });
                                     },
                                     activeColor: Colors.green,
@@ -105,10 +141,10 @@ class _GradingScreenState extends State<GradingScreen> {
                                   Text('2'),
                                   Radio(
                                     value: 2,
-                                    groupValue: val,
+                                    groupValue: usersAnswers[index].mark,
                                     onChanged: (value) {
                                       setState(() {
-                                        val = value;
+                                        usersAnswers[index].mark = value;
                                       });
                                     },
                                     activeColor: Colors.green,
@@ -120,10 +156,10 @@ class _GradingScreenState extends State<GradingScreen> {
                                   Text('3'),
                                   Radio(
                                     value: 3,
-                                    groupValue: val,
+                                    groupValue: usersAnswers[index].mark,
                                     onChanged: (value) {
                                       setState(() {
-                                        val = value;
+                                        usersAnswers[index].mark = value;
                                       });
                                     },
                                     activeColor: Colors.green,
@@ -135,10 +171,10 @@ class _GradingScreenState extends State<GradingScreen> {
                                   Text('4'),
                                   Radio(
                                     value: 4,
-                                    groupValue: val,
+                                    groupValue: usersAnswers[index].mark,
                                     onChanged: (value) {
                                       setState(() {
-                                        val = value;
+                                        usersAnswers[index].mark = value;
                                       });
                                     },
                                     activeColor: Colors.green,
@@ -150,10 +186,10 @@ class _GradingScreenState extends State<GradingScreen> {
                                   Text('5'),
                                   Radio(
                                     value: 5,
-                                    groupValue: val,
+                                    groupValue: usersAnswers[index].mark,
                                     onChanged: (value) {
                                       setState(() {
-                                        val = value;
+                                        usersAnswers[index].mark = value;
                                       });
                                     },
                                     activeColor: Colors.green,
@@ -168,12 +204,9 @@ class _GradingScreenState extends State<GradingScreen> {
                               width: MediaQuery.of(context).size.width,
                               height: 40,
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Expanded(
-                                      flex: 20,
-                                      child: Text('Teacher Comments')),
+                                  Expanded(flex: 20, child: Text('Teacher Comments')),
                                   Expanded(
                                     flex: 80,
                                     child: Container(
@@ -183,8 +216,7 @@ class _GradingScreenState extends State<GradingScreen> {
                                         border: Border.all(
                                           color: Colors.black,
                                         ),
-                                        borderRadius:
-                                            BorderRadius.circular(1.0),
+                                        borderRadius: BorderRadius.circular(1.0),
                                       ),
                                       child: Padding(
                                         padding: const EdgeInsets.all(2.0),
@@ -206,8 +238,7 @@ class _GradingScreenState extends State<GradingScreen> {
                                   height: 30,
                                   child: FloatingActionButton.extended(
                                     backgroundColor: Colors.black,
-                                    shape: BeveledRectangleBorder(
-                                        borderRadius: BorderRadius.zero),
+                                    shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
                                     onPressed: () async {},
                                     label: Text(
                                       'Submit Feedback',
