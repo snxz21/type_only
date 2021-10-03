@@ -22,31 +22,40 @@ class _GradingScreenState extends State<GradingScreen> {
   @override
   void initState() {
     super.initState();
-   Future.delayed(Duration(seconds: 2),(){
-     print(widget.question.listOfStudents);
-     print(widget.question.docID);
-     getAllUsersAnswer(widget.question.listOfStudents, widget.question.docID);
-   });
+    Future.delayed(Duration(seconds: 2), () {
+      print(widget.question.listOfStudents);
+      print(widget.question.docID);
+      getAllUsersAnswer(widget.question.listOfStudents, widget.question.docID);
+    });
   }
 
   ///users/uid_1/answers/OiosQ1cij9kPSpvxR9g1
   getAllUsersAnswer(List users, String questionId) async {
     users.forEach((element) async {
-      await db.collection("users").doc(element).collection("answers").doc(questionId).get().then((value) {
+      await db
+          .collection("users")
+          .doc(element)
+          .collection("answers")
+          .doc(questionId)
+          .get()
+          .then((value) {
         setState(() {
-          usersAnswers.add(UserAnswerModel(
-            answer: value.data()["Answer"],
-            timeCreated: value.data()["TimeCreated"],
-            userID: element,
-            mark: value.data()["Mark"] ?? 0,
-          ));
+          usersAnswers.add(
+            UserAnswerModel(
+              answer: value.data()["Answer"],
+              timeCreated: value.data()["TimeCreated"],
+              userID: element,
+              mark: value.data()["Mark"] ?? 0,
+              comment: value.data()["Comment"] ?? '',
+              statusList: value.data()['Status'] ?? [],
+            ),
+          );
         });
       });
     });
-  setState(() {
-    usersAnswers = usersAnswers.reversed.toList();
-  });
-
+    setState(() {
+      usersAnswers = usersAnswers.reversed.toList();
+    });
   }
 
   @override
@@ -61,7 +70,9 @@ class _GradingScreenState extends State<GradingScreen> {
           SizedBox(
             height: 50.0,
           ),
-          Center(child: Text('Students responses to Question  ID #: ${widget.question.docID}')),
+          Center(
+              child: Text(
+                  'Students responses to Question  ID #: ${widget.question.docID}')),
           Container(
             width: MediaQuery.of(context).size.width,
             height: 40,
@@ -95,7 +106,8 @@ class _GradingScreenState extends State<GradingScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text('Answer from student: ${usersAnswers[index].userID}; email: jsmith@gmail.com; submitted:${usersAnswers[index].timeCreated}'),
+                            Text(
+                                'Answer from student: ${usersAnswers[index].userID}; email: jsmith@gmail.com; submitted:${usersAnswers[index].timeCreated}'),
                             SizedBox(
                               width: 50.0,
                             ),
@@ -204,9 +216,12 @@ class _GradingScreenState extends State<GradingScreen> {
                               width: MediaQuery.of(context).size.width,
                               height: 40,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Expanded(flex: 20, child: Text('Teacher Comments')),
+                                  Expanded(
+                                      flex: 20,
+                                      child: Text('Teacher Comments')),
                                   Expanded(
                                     flex: 80,
                                     child: Container(
@@ -216,7 +231,8 @@ class _GradingScreenState extends State<GradingScreen> {
                                         border: Border.all(
                                           color: Colors.black,
                                         ),
-                                        borderRadius: BorderRadius.circular(1.0),
+                                        borderRadius:
+                                            BorderRadius.circular(1.0),
                                       ),
                                       child: Padding(
                                         padding: const EdgeInsets.all(2.0),
@@ -238,8 +254,16 @@ class _GradingScreenState extends State<GradingScreen> {
                                   height: 30,
                                   child: FloatingActionButton.extended(
                                     backgroundColor: Colors.black,
-                                    shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
-                                    onPressed: () async {},
+                                    shape: BeveledRectangleBorder(
+                                        borderRadius: BorderRadius.zero),
+                                    onPressed: () async {
+                                      await db
+                                          .collection("users")
+                                          .doc(usersAnswers[index].userID)
+                                          .collection("answers")
+                                          .doc();
+                                      //.update();
+                                    },
                                     label: Text(
                                       'Submit Feedback',
                                       textScaleFactor: 0.55,

@@ -3,8 +3,10 @@ import 'package:editing_check/TeacherEntryForm.dart';
 import 'package:editing_check/questionModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'Authorization/registration_screen.dart';
 import 'Student EntryForm.dart';
 import 'gradingScreen.dart';
+import 'Authorization/login_screen.dart';
 
 class UniqueIdScreen extends StatefulWidget {
   @override
@@ -155,6 +157,32 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
             heroTag: "GradingScreen",
             label: Text("GradingScreen"),
           ),
+          FloatingActionButton.extended(
+            backgroundColor: Colors.black,
+            shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return RegisterPage();
+                //   // return StudentEntryForm();
+                // return StudentTimeExpiredScreen();
+              }));
+            },
+            heroTag: "RegistrationScreen",
+            label: Text("Registration Screen"),
+          ),
+          FloatingActionButton.extended(
+            backgroundColor: Colors.black,
+            shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return EmailPasswordForm();
+                //   // return StudentEntryForm();
+                // return StudentTimeExpiredScreen();
+              }));
+            },
+            heroTag: "LoginScreen",
+            label: Text("Login Screen"),
+          )
         ],
       ),
     );

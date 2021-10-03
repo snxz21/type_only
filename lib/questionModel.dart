@@ -7,7 +7,14 @@ class QuestionModel {
   final int time;
   final int timeCreated;
 
-  QuestionModel({this.docID, this.question = "", this.maxLen = 0, this.minLen = 0, this.time = 0, this.listOfStudents, this.timeCreated});
+  QuestionModel(
+      {this.docID,
+      this.question = "",
+      this.maxLen = 0,
+      this.minLen = 0,
+      this.time = 0,
+      this.listOfStudents,
+      this.timeCreated});
 //
 // factory QuestionModel.fromFirestore(doc) {
 //   return QuestionModel(
@@ -22,11 +29,14 @@ class UserAnswerModel {
   final String timeCreated;
   final String userID;
   int mark;
+  List statusList;
+  String comment;
 
-  UserAnswerModel({
-    this.answer,
-    this.timeCreated,
-    this.userID,
-    this.mark,
-  });
+  UserAnswerModel(
+      {this.answer,
+      this.timeCreated,
+      this.userID,
+      this.mark,
+      this.statusList,
+      this.comment});
 }
