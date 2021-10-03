@@ -1,7 +1,14 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:editing_check/Authorization/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sign_button/constants.dart';
 import 'package:sign_button/create_button.dart';
+import 'package:toast/toast.dart';
+
+import '../main.dart';
 //import 'package:flutter/foundation.dart' show kIsWeb;
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -85,17 +92,37 @@ class _EmailPasswordFormState extends State<EmailPasswordForm> {
       ))
           .user;
 
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-          content: Text('${user.email} signed in'),
-        ),
-      );
+      print("email is ${user.email}");
+      print("email is ${user.uid}");
+
+
+      SingleFirebaseUserRepository userRepository =
+          SingleFirebaseUserRepository();
+
+
+      StreamSubscription _userDataSubscription;
+      _userDataSubscription?.cancel();
+      _userDataSubscription = userRepository
+          .getUserInfo(user.uid)
+          .listen((data) {
+            setState(() {
+              userDataSave = data;
+            });
+      });
+      Toast.show('${user.email} signed in', context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      Navigator.pop(context);
+      setState(() {
+
+      });
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text('${user.email} signed in'),
+      //   ),
+      // );
     } catch (e) {
-      Scaffold.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to sign in with Email & Password'),
-        ),
-      );
+      Toast.show('Failed to sign in with Email & Password', context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
     }
   }
 }

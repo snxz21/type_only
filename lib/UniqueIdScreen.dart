@@ -7,6 +7,7 @@ import 'Authorization/registration_screen.dart';
 import 'Student EntryForm.dart';
 import 'gradingScreen.dart';
 import 'Authorization/login_screen.dart';
+import 'main.dart';
 
 class UniqueIdScreen extends StatefulWidget {
   @override
@@ -20,7 +21,11 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TypeOnly'),
+        title: Row(
+          children: [
+            Text('TypeOnly'),
+          ],
+        ),
         centerTitle: true,
       ),
       body: Column(
@@ -182,6 +187,22 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
             },
             heroTag: "LoginScreen",
             label: Text("Login Screen"),
+          ),
+          InkWell(
+            child: Text(userDataSave.email ?? "email"),
+            onTap: (){
+              setState(() {
+                print(userDataSave.email);
+              });
+            },
+          ),
+          InkWell(
+            child: Text(userDataSave.firstName ?? "name"),
+            onTap: (){
+              setState(() {
+                print(userDataSave.firstName + " "+userDataSave.lastName);
+              });
+            },
           )
         ],
       ),

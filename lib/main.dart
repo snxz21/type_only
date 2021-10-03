@@ -1,7 +1,13 @@
 //import 'package:editing_check/questionModel.dart';
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'Authorization/user_model.dart';
 import 'UniqueIdScreen.dart';
+
+
+UserModel userDataSave = UserModel();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

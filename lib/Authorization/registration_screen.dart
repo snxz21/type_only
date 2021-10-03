@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -100,10 +101,18 @@ class _RegisterPageState extends State<RegisterPage> {
     ))
         .user;
     if (user != null) {
+
       setState(() {
         _success = true;
         _userEmail = user.email;
       });
+      await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
+        "firstName": "test user",
+        "lastName": "test1 user1",
+        "email": user.email,
+        "userStatus": "Student",
+      });
+      Navigator.pop(context);
     } else {
       _success = false;
     }
