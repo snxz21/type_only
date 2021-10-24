@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:editing_check/questionModel.dart';
+import 'package:editing_check/blocs/models/question_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -76,6 +76,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                     });
                   },
                   label: Text('New Question')),
+
             ),
             Container(width: double.infinity, height: 20),
             AnimatedContainer(
@@ -270,6 +271,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                           width: 80,
                                           height: 30,
                                           child: FloatingActionButton.extended(
+                                            heroTag: "Copy question teach form",
                                             backgroundColor: Colors.black,
                                             shape: BeveledRectangleBorder(
                                                 borderRadius:
@@ -382,6 +384,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                               'Grade Answers',
                                               textScaleFactor: 0.6,
                                             ),
+                                            heroTag: "Grade Answersteach form",
                                           ),
                                         ),
                                       ],

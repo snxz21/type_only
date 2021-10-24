@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:editing_check/questionModel.dart';
+import 'package:editing_check/blocs/models/question_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
+import 'blocs/models/user_answer_model.dart';
 
 class GradingScreen extends StatefulWidget {
   GradingScreen(this.question);
@@ -14,8 +16,7 @@ class GradingScreen extends StatefulWidget {
 }
 
 class _GradingScreenState extends State<GradingScreen> {
-  bool _value = false;
-  // int val = -1;
+
   var db = FirebaseFirestore.instance;
   List<UserAnswerModel> usersAnswers = [];
 

@@ -32,6 +32,7 @@ class StudentTimeExpiredScreen extends StatelessWidget {
                 }));
               },
               label: Text("Answer Again"),
+              heroTag: "Answer Again time expired",
             ),
           ),
         ],
