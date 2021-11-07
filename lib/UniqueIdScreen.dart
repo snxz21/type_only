@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:editing_check/TeacherEntryForm.dart';
+import 'package:editing_check/teacher_entry_form.dart';
 import 'package:editing_check/blocs/models/question_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +8,7 @@ import 'Authorization/registration_screen.dart';
 import 'Student EntryForm.dart';
 import 'bloc_auth/UserBloc/user_bloc.dart';
 import 'blocs/sudents_entery_bloc/sudents_entery_bloc.dart';
+import 'blocs/teacher_entry_bloc/teacher_entry_bloc.dart';
 import 'gradingScreen.dart';
 import 'Authorization/login_screen.dart';
 import 'main.dart';
@@ -165,6 +166,7 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
                   backgroundColor: Colors.black,
                   shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
                   onPressed: () {
+                    BlocProvider.of<TeacherEntryBloc>(context).add(TeacherEntryLoadingEvent());
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
                       return TeacherEntryForm();
                     }));

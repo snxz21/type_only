@@ -16,3 +16,12 @@ class SudentsEnteryLoadedEvent extends SudentsEnteryEvent {
 
   const SudentsEnteryLoadedEvent(this.loadedQuestion);
 }
+
+class SudentsEnterySendAnswerEvent extends SudentsEnteryEvent {
+
+  final QuestionModel loadedQuestion;
+  final String timeCreated;
+  final String answer;
+
+  const SudentsEnterySendAnswerEvent({this.loadedQuestion, this.timeCreated, this.answer});
+}

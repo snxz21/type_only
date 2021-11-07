@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:editing_check/main.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toast/toast.dart';
 
@@ -25,8 +26,8 @@ class StudentEntryForm extends StatefulWidget {
 class _StudentEntryFormState extends State<StudentEntryForm> {
   TextEditingController uniqueAnswerController = TextEditingController();
   int _counter = 10; //nachalnaya ustanovka vremeni taimera
-  int _minute =10 ; // peremennaya dlya pokaza minut
-  int _second =10; // peremennaya plya pokaza sekund
+  int _minute = 10; // peremennaya dlya pokaza minut
+  int _second = 10; // peremennaya plya pokaza sekund
   bool isEnable = true; //????
   int oldLen = 0; // nachalnaya  ustanowka schetchika proverki copy/paste
   int minLen = 16; //
@@ -47,7 +48,7 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
     super.dispose();
   }
 
-  dynamic endBtn= Container()/*= FloatingActionButton.extended(onPressed: () {}, label: Text(""))*/;
+  dynamic endBtn = Container() /*= FloatingActionButton.extended(onPressed: () {}, label: Text(""))*/;
 
   void checkMinLenAnswer(SudentsEnteryLoadedState state) {
     if (uniqueAnswerController.text.length > state.loadedQuestion.minLen) {
@@ -66,18 +67,26 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
               _minute = 0;
               _second = 0;
             });
-            List<dynamic> tmpStudentsId = state.loadedQuestion.listOfStudents;
-            var tempId = "tmpStudentsId_${Random().nextInt(5000)}";
-            tmpStudentsId.add(tempId);
-            FirebaseFirestore.instance.collection("Tests").doc(state.loadedQuestion.docID).update({
-              "ListOfStudents": tmpStudentsId,
-            });
-            // /users/uid_1/answers/1aDHnkobaejfZ95Ysvz0
-            FirebaseFirestore.instance.collection("users").doc(tempId).collection("answers").doc(state.loadedQuestion.docID).set({
-              "TimeCreated": DateTime.now().toString().substring(0, 16),
-              "Answer": uniqueAnswerController.text,
-            });
-
+            // List<dynamic> tmpStudentsId = state.loadedQuestion.listOfStudents;
+            // tmpStudentsId.add(userDataSave.uid);
+            // FirebaseFirestore.instance.collection("Tests").doc(state.loadedQuestion.docID).update({
+            //   "ListOfStudents": tmpStudentsId,
+            // });
+            // // /users/uid_1/answers/1aDHnkobaejfZ95Ysvz0
+            // FirebaseFirestore.instance
+            //     .collection("users")
+            //     .doc(tempId)
+            //     .collection("answers")
+            //     .doc(state.loadedQuestion.docID)
+            //     .set({
+            //   "TimeCreated": DateTime.now().toString().substring(0, 16),
+            //   "Answer": uniqueAnswerController.text,
+            // });
+            BlocProvider.of<SudentsEnteryBloc>(context).add(SudentsEnterySendAnswerEvent(
+              loadedQuestion: state.loadedQuestion,
+              timeCreated: DateTime.now().toString().substring(0, 16),
+              answer: uniqueAnswerController.text,
+            ));
             Navigator.pop(context);
             Toast.show("You have submitted answer!", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
             // Navigator.push(context, MaterialPageRoute(builder: (_) {
@@ -135,158 +144,161 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SudentsEnteryBloc, SudentsEnteryState>(builder: (context, state) {
-      if (state is SudentsEnteryInitialState) {
-        return Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
-      } else if (state is SudentsEnteryLoadedState) {
-        if (_timer == null) {
-          Future.delayed(Duration.zero,(){
-            _counter = state.loadedQuestion.time;
-            minLen = state.loadedQuestion.minLen;
-            maxLen = state.loadedQuestion.maxLen;
-            setState(() {
-              _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
-                // widget taimera
-                setState(() {
-                  _counter--;
-                  _minute = _counter ~/ 60;
-                  _second = _counter - (_minute * 60);
-                  if (_minute <= 0 && _second <= 0) {
-                    _timer.cancel();
-                    isEnable = false;
-                    endButton();
-                  }
+    return BlocBuilder<SudentsEnteryBloc, SudentsEnteryState>(
+      builder: (context, state) {
+        if (state is SudentsEnteryInitialState) {
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else if (state is SudentsEnteryLoadedState) {
+          if (_timer == null) {
+            Future.delayed(Duration.zero, () {
+              _counter = state.loadedQuestion.time;
+              minLen = state.loadedQuestion.minLen;
+              maxLen = state.loadedQuestion.maxLen;
+              setState(() {
+                _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+                  // widget taimera
+                  setState(() {
+                    _counter--;
+                    _minute = _counter ~/ 60;
+                    _second = _counter - (_minute * 60);
+                    if (_minute <= 0 && _second <= 0) {
+                      _timer.cancel();
+                      isEnable = false;
+                      endButton();
+                    }
+                  });
                 });
               });
             });
+          }
+          return Scaffold(
+              appBar: AppBar(
+                title: Text('TypeOnly'),
+                centerTitle: true,
+              ),
+              body: Column(
+                verticalDirection: VerticalDirection.down,
+                children: [
+                  Container(width: double.infinity, height: 100),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Question: ',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 1, 10, 5),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black,
+                        ),
+                        borderRadius: BorderRadius.circular(1.0),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(state.loadedQuestion.question),
+                    ),
+                  ),
+                  Container(width: double.infinity, height: 10),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 1, 10, 5),
+                    child: Row(
+                      children: [
+                        Text('Time left $_minute minutes : $_second seconds'),
+                        // soobshenie na ekrane schetchika vremeni
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 1, 20, 5),
+                    child: Container(
+                      width: double.infinity,
+                      height: 75,
+                      child: TextFormField(
+                        //Pole formy wwoda otveta studentom
+                        decoration: new InputDecoration(
+                          border: new OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black,
+                            ),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(1.0),
+                            ),
+                          ),
+                          filled: true,
+                          hintStyle: new TextStyle(color: Colors.black38, fontSize: 18),
+                          hintText: "Type your answer here. Important: Do not use copy/paste! ",
+                          fillColor: Colors.white,
+                        ),
+                        enabled: isEnable,
+                        controller: uniqueAnswerController,
+                        maxLength: maxLen,
+                        minLines: 1,
+                        maxLines: 15,
+                        onChanged: (value) {
+                          print(value);
 
-          });
-        }
-        return Scaffold(
-            appBar: AppBar(
-              title: Text('TypeOnly'),
-              centerTitle: true,
+                          endButton();
+                          checkMinLenAnswer(state);
+                          if (value.length - oldLen > 1) {
+                            endButton(isPaste: true);
+                            print('do not paste');
+                          } else {
+                            setState(() {
+                              oldLen = value.length;
+                            });
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: isShow,
+                    child: Container(
+                      margin: const EdgeInsets.fromLTRB(10, 1, 5, 5),
+                      padding: const EdgeInsets.fromLTRB(10, 1, 5, 5),
+                      decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+                      child: Text(message),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Container(width: 10, height: 10),
+                      Visibility(
+                        visible: isShow, //minimalnaya dlina stroki do pokaza knopki "Submit"
+                        child: endBtn,
+                      ),
+                    ],
+                  )
+                ],
+              ));
+        } else if (state is OnErrorSudentsEnteryState) {
+          return Scaffold(
+            body: Center(
+              child: Text("Error load question, try again."),
             ),
-            body: Column(
-              verticalDirection: VerticalDirection.down,
-              children: [
-                Container(width: double.infinity, height: 100),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Question: ',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 1, 10, 5),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black,
-                      ),
-                      borderRadius: BorderRadius.circular(1.0),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(state.loadedQuestion.question),
-                  ),
-                ),
-                Container(width: double.infinity, height: 10),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 1, 10, 5),
-                  child: Row(
-                    children: [
-                      Text('Time left $_minute minutes : $_second seconds'), // soobshenie na ekrane schetchika vremeni
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 1, 20, 5),
-                  child: Container(
-                    width: double.infinity,
-                    height: 75,
-                    child: TextFormField(
-                      //Pole formy wwoda otveta studentom
-                      decoration: new InputDecoration(
-                        border: new OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                          ),
-                          borderRadius: const BorderRadius.all(
-                            const Radius.circular(1.0),
-                          ),
-                        ),
-                        filled: true,
-                        hintStyle: new TextStyle(color: Colors.black38, fontSize: 18),
-                        hintText: "Type your answer here. Important: Do not use copy/paste! ",
-                        fillColor: Colors.white,
-                      ),
-                      enabled: isEnable,
-                      controller: uniqueAnswerController,
-                      maxLength: maxLen,
-                      minLines: 1,
-                      maxLines: 15,
-                      onChanged: (value) {
-                        print(value);
-
-                        endButton();checkMinLenAnswer(state);
-                        if (value.length - oldLen > 1) {
-                          endButton(isPaste: true);
-                          print('do not paste');
-                        } else {
-                          setState(() {
-                            oldLen = value.length;
-                          });
-                        }
-                      },
-                    ),
-                  ),
-                ),
-                Visibility(
-                  visible: isShow,
-                  child: Container(
-                    margin: const EdgeInsets.fromLTRB(10, 1, 5, 5),
-                    padding: const EdgeInsets.fromLTRB(10, 1, 5, 5),
-                    decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-                    child: Text(message),
-                  ),
-                ),
-                Row(
-                  children: [
-                    Container(width: 10, height: 10),
-                    Visibility(
-                      visible: isShow, //minimalnaya dlina stroki do pokaza knopki "Submit"
-                      child: endBtn,
-                    ),
-                  ],
-                )
-              ],
-            ));
-      } else if (state is OnErrorSudentsEnteryState) {
-        return Scaffold(
-          body: Center(
-            child: Text("Error load question, try again."),
-          ),
-        );
-      } else {
-        return Scaffold(
-          body: Center(
-            child: Text("Error load question, try again."),
-          ),
-        );
-      }
-    });
+          );
+        } else {
+          return Scaffold(
+            body: Center(
+              child: Text("Error load question, try again."),
+            ),
+          );
+        }
+      },
+    );
   }
 }

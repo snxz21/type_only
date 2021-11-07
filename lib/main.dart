@@ -13,6 +13,7 @@ import 'bloc_auth/authentication_bloc/authentication_bloc.dart';
 import 'bloc_auth/screens/login/login_screen.dart';
 import 'bloc_auth/simple_bloc_observer.dart';
 import 'bloc_auth/user_repository.dart';
+import 'blocs/teacher_entry_bloc/teacher_entry_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +34,9 @@ Future<void> main() async {
         ),
         BlocProvider<SudentsEnteryBloc>(
           create: (_) => SudentsEnteryBloc(),
+        ),
+        BlocProvider<TeacherEntryBloc>(
+          create: (_) => TeacherEntryBloc(),
         ),
       ],
       child: MyApp(
