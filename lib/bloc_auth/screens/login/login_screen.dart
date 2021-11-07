@@ -7,8 +7,6 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../user_repository.dart';
 import 'login_form.dart';
 
-
-
 class LoginScreen extends StatelessWidget {
   final UserRepository _userRepository;
 
@@ -57,7 +55,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              color: HexColor("22292F"),
+              color: HexColor("fbfdff"),
             ),
           ],
         ),

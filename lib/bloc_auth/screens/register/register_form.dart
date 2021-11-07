@@ -27,7 +27,8 @@ class _LoginFormState extends State<RegisterForm> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
-  bool get isPopulated => _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
+  bool get isPopulated =>
+      _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
 
   bool isButtonEnabled(RegisterState state) {
     return state.isFormValid && isPopulated && !state.isSubmitting;
@@ -42,8 +43,6 @@ class _LoginFormState extends State<RegisterForm> {
     _emailController.addListener(_onEmailChange);
     _passwordController.addListener(_onPasswordChange);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +121,8 @@ class _LoginFormState extends State<RegisterForm> {
                     height: 56,
                     child: TextField(
                         textAlign: TextAlign.center,
-                        style: new TextStyle(color: Colors.grey[800], fontSize: 25),
+                        style: new TextStyle(
+                            color: Colors.grey[800], fontSize: 25),
                         decoration: new InputDecoration(
                             border: new OutlineInputBorder(
                               borderRadius: const BorderRadius.all(
@@ -130,8 +130,9 @@ class _LoginFormState extends State<RegisterForm> {
                               ),
                             ),
                             filled: true,
-                            hintStyle: new TextStyle(color: Colors.grey[800], fontSize: 25),
-                            hintText: "Имя",
+                            hintStyle: new TextStyle(
+                                color: Colors.grey[800], fontSize: 25),
+                            hintText: "Name",
                             fillColor: Colors.white70),
                         controller: _nameController),
                   ),
@@ -143,7 +144,8 @@ class _LoginFormState extends State<RegisterForm> {
                     height: 56,
                     child: TextField(
                         textAlign: TextAlign.center,
-                        style: new TextStyle(color: Colors.grey[800], fontSize: 25),
+                        style: new TextStyle(
+                            color: Colors.grey[800], fontSize: 25),
                         decoration: new InputDecoration(
                             border: new OutlineInputBorder(
                               borderRadius: const BorderRadius.all(
@@ -151,7 +153,8 @@ class _LoginFormState extends State<RegisterForm> {
                               ),
                             ),
                             filled: true,
-                            hintStyle: new TextStyle(color: Colors.grey[800], fontSize: 25),
+                            hintStyle: new TextStyle(
+                                color: Colors.grey[800], fontSize: 25),
                             hintText: "Номер телефона",
                             fillColor: Colors.white70),
                         controller: _phoneController),
@@ -165,7 +168,8 @@ class _LoginFormState extends State<RegisterForm> {
                     child: TextFormField(
                       controller: _emailController,
                       textAlign: TextAlign.center,
-                      style: new TextStyle(color: Colors.grey[800], fontSize: 25),
+                      style:
+                          new TextStyle(color: Colors.grey[800], fontSize: 25),
                       decoration: new InputDecoration(
                         border: new OutlineInputBorder(
                           borderRadius: const BorderRadius.all(
@@ -173,7 +177,8 @@ class _LoginFormState extends State<RegisterForm> {
                           ),
                         ),
                         filled: true,
-                        hintStyle: new TextStyle(color: Colors.grey[800], fontSize: 25),
+                        hintStyle: new TextStyle(
+                            color: Colors.grey[800], fontSize: 25),
                         hintText: "E-mail",
                         fillColor: Colors.white70,
                         // counterText: "",
@@ -183,7 +188,7 @@ class _LoginFormState extends State<RegisterForm> {
                       autovalidateMode: AutovalidateMode.always,
                       autocorrect: false,
                       validator: (_) {
-                        return !state.isEmailValid ? 'Не корректный email' : null;
+                        return !state.isEmailValid ? 'Incorrect email' : null;
                       },
                     ),
                   ),
@@ -196,7 +201,8 @@ class _LoginFormState extends State<RegisterForm> {
                     child: TextFormField(
                       controller: _passwordController,
                       textAlign: TextAlign.center,
-                      style: new TextStyle(color: Colors.grey[800], fontSize: 25),
+                      style:
+                          new TextStyle(color: Colors.grey[800], fontSize: 25),
                       decoration: new InputDecoration(
                           border: new OutlineInputBorder(
                             borderRadius: const BorderRadius.all(
@@ -204,14 +210,17 @@ class _LoginFormState extends State<RegisterForm> {
                             ),
                           ),
                           filled: true,
-                          hintStyle: new TextStyle(color: Colors.grey[800], fontSize: 25),
-                          hintText: "Пароль",
+                          hintStyle: new TextStyle(
+                              color: Colors.grey[800], fontSize: 25),
+                          hintText: "Password",
                           fillColor: Colors.white70),
                       obscureText: true,
                       // autovalidate: true,
                       autocorrect: false,
                       validator: (_) {
-                        return !state.isPasswordValid ? 'Не корректный пароль' : null;
+                        return !state.isPasswordValid
+                            ? 'Incorrect Password'
+                            : null;
                       },
                     ),
                   ),
@@ -235,18 +244,23 @@ class _LoginFormState extends State<RegisterForm> {
                           () {
                         if (isButtonEnabled(state)) {
                           _onFormSubmitted();
-                          Navigator.push(context, MaterialPageRoute(builder: (_) {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) {
                             return LoginScreen(
                               userRepository: UserRepository(),
                             );
                           }));
                         }
                       },
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
                       backgroundColor: HexColor("fcc535"),
                       label: Text(
-                        'Создать аккаунт',
-                        style: TextStyle(color: Colors.black, fontSize: 25, fontWeight: FontWeight.w600),
+                        'Create Account',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600),
                       ),
                     ),
                   ),
@@ -267,7 +281,8 @@ class _LoginFormState extends State<RegisterForm> {
   }
 
   void _onPasswordChange() {
-    _registerBloc.add(RegisterPasswordChanged(password: _passwordController.text));
+    _registerBloc
+        .add(RegisterPasswordChanged(password: _passwordController.text));
   }
 
   void _onFormSubmitted() {

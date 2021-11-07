@@ -16,7 +16,6 @@ class GradingScreen extends StatefulWidget {
 }
 
 class _GradingScreenState extends State<GradingScreen> {
-
   var db = FirebaseFirestore.instance;
   List<UserAnswerModel> usersAnswers = [];
 
@@ -95,6 +94,8 @@ class _GradingScreenState extends State<GradingScreen> {
                 scrollDirection: Axis.vertical,
                 itemCount: usersAnswers.length,
                 itemBuilder: (context, index) {
+                  TextEditingController teacherUniqueController =
+                      TextEditingController();
                   return Container(
                     width: MediaQuery.of(context).size.width * 0.95,
                     child: Card(
@@ -223,22 +224,34 @@ class _GradingScreenState extends State<GradingScreen> {
                                   Expanded(
                                       flex: 20,
                                       child: Text('Teacher Comments')),
-                                  Expanded(
-                                    flex: 80,
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(10, 1, 20, 5),
                                     child: Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: Colors.black,
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(1.0),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: Text("Teachers Comments here "),
-                                      ),
+                                      width: double.infinity,
+                                      height: 75,
+                                      child: TextFormField(
+                                          //Pole formy wwoda otveta studentom
+                                          decoration: new InputDecoration(
+                                            border: new OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Colors.black,
+                                              ),
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                const Radius.circular(1.0),
+                                              ),
+                                            ),
+                                            filled: true,
+                                            hintStyle: new TextStyle(
+                                                color: Colors.black38,
+                                                fontSize: 18),
+                                            hintText:
+                                                "Type your answer here. Important: Do not use copy/paste! ",
+                                            fillColor: Colors.white,
+                                          ),
+                                          controller: teacherUniqueController,
+                                          onChanged: (value) {}),
                                     ),
                                   ),
                                 ],

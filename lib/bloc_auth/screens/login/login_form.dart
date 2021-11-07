@@ -16,7 +16,6 @@ import 'package:editing_check/bloc_auth/screens/register/register_form.dart';
 
 import '../../user_repository.dart';
 
-
 class LoginForm extends StatefulWidget {
   final UserRepository _userRepository;
 
@@ -34,7 +33,8 @@ class _LoginFormState extends State<LoginForm> {
 
   bool isLogin = true;
 
-  bool get isPopulated => _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
+  bool get isPopulated =>
+      _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
 
   bool isButtonEnabled(LoginState state) {
     return state.isFormValid && isPopulated && !state.isSubmitting;
@@ -64,11 +64,11 @@ class _LoginFormState extends State<LoginForm> {
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text('Ошибка логина'),
+                    Text('Login Error'),
                     Icon(Icons.error),
                   ],
                 ),
-                backgroundColor: Color(0xffffae88),
+                backgroundColor: Color(0xff88D9FF),
               ),
             );
         }
@@ -83,13 +83,13 @@ class _LoginFormState extends State<LoginForm> {
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text('Логин...'),
+                    Text('Login...'),
                     CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
                     )
                   ],
                 ),
-                backgroundColor: Color(0xffffae88),
+                backgroundColor: Color(0xff88D9FF),
               ),
             );
         }
@@ -145,7 +145,8 @@ class _LoginFormState extends State<LoginForm> {
                               child: TextFormField(
                                 controller: _emailController,
                                 textAlign: TextAlign.center,
-                                style: new TextStyle(color: Colors.grey[800], fontSize: 25),
+                                style: new TextStyle(
+                                    color: Colors.white, fontSize: 25),
                                 decoration: new InputDecoration(
                                   border: new OutlineInputBorder(
                                     borderRadius: const BorderRadius.all(
@@ -153,9 +154,10 @@ class _LoginFormState extends State<LoginForm> {
                                     ),
                                   ),
                                   filled: true,
-                                  hintStyle: new TextStyle(color: Colors.grey[800], fontSize: 25),
+                                  hintStyle: new TextStyle(
+                                      color: Colors.grey[800], fontSize: 25),
                                   hintText: "E-mail",
-                                  fillColor: Colors.white70,
+                                  fillColor: Colors.blue,
                                   // counterText: "",
                                   // counterStyle: TextStyle(fontSize: 0)
                                 ),
@@ -163,7 +165,9 @@ class _LoginFormState extends State<LoginForm> {
                                 autovalidateMode: AutovalidateMode.always,
                                 autocorrect: false,
                                 validator: (_) {
-                                  return !state.isEmailValid ? 'Не корректный email' : null;
+                                  return !state.isEmailValid
+                                      ? 'Incorrect Email'
+                                      : null;
                                 },
                               ),
                             ),
@@ -176,7 +180,8 @@ class _LoginFormState extends State<LoginForm> {
                               child: TextFormField(
                                 controller: _passwordController,
                                 textAlign: TextAlign.center,
-                                style: new TextStyle(color: Colors.grey[800], fontSize: 25),
+                                style: new TextStyle(
+                                    color: Colors.grey[800], fontSize: 25),
                                 decoration: new InputDecoration(
                                     border: new OutlineInputBorder(
                                       borderRadius: const BorderRadius.all(
@@ -184,14 +189,17 @@ class _LoginFormState extends State<LoginForm> {
                                       ),
                                     ),
                                     filled: true,
-                                    hintStyle: new TextStyle(color: Colors.grey[800], fontSize: 25),
-                                    hintText: "Пароль",
-                                    fillColor: Colors.white70),
+                                    hintStyle: new TextStyle(
+                                        color: Colors.grey[800], fontSize: 25),
+                                    hintText: "Password",
+                                    fillColor: Colors.blue),
                                 obscureText: true,
                                 // autovalidate: true,
                                 autocorrect: false,
                                 validator: (_) {
-                                  return !state.isPasswordValid ? 'Не корректный пароль' : null;
+                                  return !state.isPasswordValid
+                                      ? 'Не корректный пароль'
+                                      : null;
                                 },
                               ),
                             ),
@@ -214,22 +222,26 @@ class _LoginFormState extends State<LoginForm> {
                           :*/
                                     () {
                                   // if (isButtonEnabled(state)) {
-                                    _onFormSubmitted();
+                                  _onFormSubmitted();
                                   // }
                                 },
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
                                 backgroundColor: HexColor("fcc535"),
                                 label: Text(
-                                  isLogin ? "Войти" : 'Создать аккаунт',
+                                  isLogin ? "Enter" : 'Create Account',
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 25, fontWeight: FontWeight.w600),
+                                      color: Colors.white,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w600),
                                 ),
                               ),
                             ),
                           ],
                         )
                       : BlocProvider<RegisterBloc>(
-                          create: (context) => RegisterBloc(userRepository: widget._userRepository),
+                          create: (context) => RegisterBloc(
+                              userRepository: widget._userRepository),
                           child: Container(
                             // margin: const EdgeInsets.only(top: 230),/
                             child: RegisterForm(),
@@ -260,7 +272,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _onFormSubmitted() {
-    _loginBloc.add(
-        LoginWithCredentialsPressed(email: _emailController.text, password: _passwordController.text));
+    _loginBloc.add(LoginWithCredentialsPressed(
+        email: _emailController.text, password: _passwordController.text));
   }
 }
