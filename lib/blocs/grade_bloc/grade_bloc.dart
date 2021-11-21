@@ -29,19 +29,26 @@ class GradeBloc extends Bloc<GradeEvent, GradeState> {
     } else if (event is GradeLoadedEvent) {
       yield* _mapTodosUpdateToState(event);
     } else if (event is GradeSendAnswerEvent) {
-      // var tmpListStudents = event.loadedQuestion.listOfStudents;
-      // tmpListStudents.add(userDataSave.uid);
       // FirebaseFirestore.instance.collection("Tests").doc(event.loadedQuestion.docID).update({
       //   "ListOfStudents": tmpListStudents,
       // });
-      // FirebaseFirestore.instance
-      //     .collection("users")
-      //     .doc(userDataSave.uid)
-      //     .collection("answers")
-      //     .doc(event.loadedQuestion.docID)
-      //     .set({
-      //   "TimeCreated": DateTime.now().toString().substring(0, 16),
-      //   "Answer": event.answer,
+      print("studentList ${event.studentList}");
+      print("studentList.runtimeType ${event.studentList.runtimeType}");
+
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(event.sudentsID)
+          .collection("answers")
+          .doc(event.quesionID)
+          .update({
+        "Mark": event.mark,
+        "Comment": event.teachersComment,
+        "Status": event.statusList,
+      });
+      //
+      // yield GradeInitialState();
+      // Future.delayed(Duration(milliseconds: 200), () {
+      //   add(GradeLoadingEvent(questionID: event.sudentsID, student: event.studentList));
       // });
 
     }
@@ -49,38 +56,33 @@ class GradeBloc extends Bloc<GradeEvent, GradeState> {
 
   var db = FirebaseFirestore.instance;
 
-  Stream<GradeState> _mapLoadTodosToState(
-      String questionID, List students) async* {
-    Map<String, UserAnswerModel> userAnswers;
+  Stream<GradeState> _mapLoadTodosToState(String questionID, List students) async* {
+    Map<String, UserAnswerModel> userAnswers = {};
     students.forEach((student) async {
-      await db
-          .collection("users")
-          .doc(student)
-          .collection("answers")
-          .doc(questionID)
-          .get()
-          .then((value) {
+      await db.collection("users").doc(student).collection("answers").doc(questionID).get().then((value) {
         print("value = ${value.data()}");
+        print("value = ${value.data()["Answer"]}");
+        print("value = ${value.data()["TimeCreated"]}");
+
         userAnswers[student] = UserAnswerModel(
           answer: value.data()["Answer"] ?? "",
           timeCreated: value.data()["TimeCreated"] ?? "",
-          // userID: student,
-          // mark: value.data()["Mark"] ?? 0,
-          // comment: value.data()["Comment"] ?? '',
-          // statusList: value.data()['Status'] ?? [],
+          userID: student,
+          mark: value.data()["Mark"] ?? 0,
+          comment: value.data()["Comment"] ?? '',
+          statusList: value.data()['Status'] ?? [],
         );
-
       });
-      print("len = ${userAnswers.keys.length}");
-      add(GradeLoadedEvent(userAnswers));
-
+      // print("len = ${userAnswers.keys.length}");
     });
 
-
+    Future.delayed(Duration(milliseconds: 2000), () {
+      add(GradeLoadedEvent(userAnswers));
+    });
   }
 
   Stream<GradeState> _mapTodosUpdateToState(GradeLoadedEvent event) async* {
-
+    print(event.userAnswers.length);
     yield GradeLoadedState(event.userAnswers);
   }
 }

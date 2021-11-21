@@ -19,5 +19,12 @@ class GradeLoadedEvent extends GradeEvent {
 }
 
 class GradeSendAnswerEvent extends GradeEvent {
-  const GradeSendAnswerEvent();
+  final int mark;
+  final String teachersComment;
+  final String sudentsID;
+  final String quesionID;
+  final List statusList;
+  final List studentList;
+
+  const GradeSendAnswerEvent({this.mark, this.teachersComment, this.sudentsID, this.quesionID, this.statusList,this.studentList});
 }

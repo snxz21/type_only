@@ -356,7 +356,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                                 'Grade Answers',
                                                 textScaleFactor: 0.6,
                                               ),
-                                              heroTag: "Grade Answersteach form",
+                                              heroTag: "Grade Answersteach form$index",
                                             ),
                                           ),
                                         ],
