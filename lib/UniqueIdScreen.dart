@@ -162,34 +162,23 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
             ),
             floatingActionButton: Row(
               children: [
-                FloatingActionButton.extended(
-                  backgroundColor: Colors.black,
-                  shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
-                  onPressed: () {
-                    BlocProvider.of<TeacherEntryBloc>(context).add(TeacherEntryLoadingEvent());
-                    Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return TeacherEntryForm();
-                    }));
-                  },
-                  heroTag: "TeacherEntryForm",
-                  label: Text("TeacherEntryForm"),
+                Visibility(
+                  visible: userDataSave.userStatus=='Teacher',
+                  child: FloatingActionButton.extended(
+                    backgroundColor: Colors.black,
+                    shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+                    onPressed: () {
+                      BlocProvider.of<TeacherEntryBloc>(context).add(TeacherEntryLoadingEvent());
+                      Navigator.push(context, MaterialPageRoute(builder: (_) {
+                        return TeacherEntryForm();
+                      }));
+                    },
+                    heroTag: "TeacherEntryForm",
+                    label: Text("TeacherEntryForm"),
+                  ),
                 ),
-                InkWell(
-                  child: Text(userDataSave.email ?? "email"),
-                  onTap: () {
-                    setState(() {
-                      print(userDataSave.email);
-                    });
-                  },
-                ),
-                InkWell(
-                  child: Text(userDataSave.firstName ?? "name"),
-                  onTap: () {
-                    setState(() {
-                      print(userDataSave.firstName + " " + userDataSave.lastName);
-                    });
-                  },
-                ),
+                
+                
               ],
             ),
           );
