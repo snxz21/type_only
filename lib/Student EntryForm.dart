@@ -26,8 +26,8 @@ class StudentEntryForm extends StatefulWidget {
 class _StudentEntryFormState extends State<StudentEntryForm> {
   TextEditingController uniqueAnswerController = TextEditingController();
   int _counter = 10; //nachalnaya ustanovka vremeni taimera
-  int _minute = 10; // peremennaya dlya pokaza minut
-  int _second = 10; // peremennaya plya pokaza sekund
+  int _minute = 0; // peremennaya dlya pokaza minut
+  int _second = 0; // peremennaya plya pokaza sekund
   bool isEnable = true; //????
   int oldLen = 0; // nachalnaya  ustanowka schetchika proverki copy/paste
   int minLen = 16; //
@@ -155,9 +155,12 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
         } else if (state is SudentsEnteryLoadedState) {
           if (_timer == null) {
             Future.delayed(Duration.zero, () {
-              _counter = state.loadedQuestion.time;
-              minLen = state.loadedQuestion.minLen;
-              maxLen = state.loadedQuestion.maxLen;
+
+              setState(() {
+                _counter = state.loadedQuestion.time;
+                minLen = state.loadedQuestion.minLen;
+                maxLen = state.loadedQuestion.maxLen;
+              });
               setState(() {
                 _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
                   // widget taimera
@@ -178,6 +181,16 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
           return Scaffold(
               appBar: AppBar(
                 title: Text('TypeOnly'),
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    BlocProvider.of<SudentsEnteryBloc>(context).add(
+                      SudentsEnteryDropStateEvent(),
+                    );
+
+                  },
+                  icon: Icon(Icons.arrow_back),
+                ),
                 centerTitle: true,
               ),
               body: Column(

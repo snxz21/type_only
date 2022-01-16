@@ -45,6 +45,9 @@ class SudentsEnteryBloc extends Bloc<SudentsEnteryEvent, SudentsEnteryState> {
 
 
     }
+    else if(event is SudentsEnteryDropStateEvent){
+      yield SudentsEnteryInitialState();
+    }
   }
 
   Stream<SudentsEnteryState> _mapLoadTodosToState(String questionID) async* {

@@ -13,7 +13,8 @@ class GradeLoadingEvent extends GradeEvent {
 }
 
 class GradeLoadedEvent extends GradeEvent {
-  final Map<String, UserAnswerModel> userAnswers;
+  final Map<UserModel, UserAnswerModel> userAnswers;
+  // final UserModel userModel;
 
   const GradeLoadedEvent(this.userAnswers);
 }

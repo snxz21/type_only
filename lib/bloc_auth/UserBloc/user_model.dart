@@ -12,7 +12,7 @@ class UserModel {
 
   factory UserModel.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data();
-
+    print("value123 = ${data}");
     return UserModel(
       firstName: data['firstName'],
       lastName: data['lastName'],
@@ -20,6 +20,13 @@ class UserModel {
       userStatus: data['userStatus'],
       uid: doc.id,
     );
+  }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return "firstName: $firstName, lastName: $lastName, email: $email,userStatus $userStatus, uid $uid";
+
   }
 }
 

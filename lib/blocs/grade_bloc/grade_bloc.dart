@@ -57,21 +57,27 @@ class GradeBloc extends Bloc<GradeEvent, GradeState> {
   var db = FirebaseFirestore.instance;
 
   Stream<GradeState> _mapLoadTodosToState(String questionID, List students) async* {
-    Map<String, UserAnswerModel> userAnswers = {};
+    Map<UserModel, UserAnswerModel> userAnswers = {};
     students.forEach((student) async {
       await db.collection("users").doc(student).collection("answers").doc(questionID).get().then((value) {
         print("value = ${value.data()}");
         print("value = ${value.data()["Answer"]}");
         print("value = ${value.data()["TimeCreated"]}");
+        UserModel userData;
+        db.collection('users').doc(student).get().then((value1) {
+          userData = UserModel.fromFirestore(value1);
 
-        userAnswers[student] = UserAnswerModel(
-          answer: value.data()["Answer"] ?? "",
-          timeCreated: value.data()["TimeCreated"] ?? "",
-          userID: student,
-          mark: value.data()["Mark"] ?? 0,
-          comment: value.data()["Comment"] ?? '',
-          statusList: value.data()['Status'] ?? [],
-        );
+          print("userData = $userData");
+          // .map((snap) => UserModel.fromFirestore(snap));
+          userAnswers[userData] = UserAnswerModel(
+            answer: value.data()["Answer"] ?? "",
+            timeCreated: value.data()["TimeCreated"] ?? "",
+            userID: student,
+            mark: value.data()["Mark"] ?? 0,
+            comment: value.data()["Comment"] ?? '',
+            statusList: value.data()['Status'] ?? [],
+          );
+        });
       });
       // print("len = ${userAnswers.keys.length}");
     });

@@ -70,7 +70,6 @@ class _GradingScreenState extends State<GradingScreen> {
           ),
         );
       } else if (state is GradeLoadedState) {
-
         return Scaffold(
           appBar: AppBar(
             title: Text('TypeOnly'),
@@ -106,7 +105,7 @@ class _GradingScreenState extends State<GradingScreen> {
                   itemBuilder: (context, index) {
                     TextEditingController teacherUniqueController = TextEditingController();
 
-                    if(teacherUniqueController.text == ""){
+                    if (teacherUniqueController.text == "") {
                       teacherUniqueController.text = state.userAnswers.values.elementAt(index).comment;
                     }
                     // return Container(child: Text(state.userAnswers.values.elementAt(index).answer),);
@@ -120,10 +119,11 @@ class _GradingScreenState extends State<GradingScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text('Answer from student: ${state.userAnswers.keys.elementAt(index)}\n'
-                                'email: jsmith@gmail.com\n'
+                            Text(
+                                'Answer from student: ${state.userAnswers.keys.elementAt(index).firstName}'
+                                    ' ${state.userAnswers.keys.elementAt(index).lastName}\n'
+                                'email: ${state.userAnswers.keys.elementAt(index).email}\n'
                                 'submitted:${state.userAnswers.values.elementAt(index).timeCreated}'),
-
                             Container(
                               width: MediaQuery.of(context).size.width,
                               height: 40,
@@ -141,87 +141,89 @@ class _GradingScreenState extends State<GradingScreen> {
                             SizedBox(
                               height: 10.0,
                             ),
-                            Row(children: [
-                              Text("Teacher's Feedback"),
-                              SizedBox(
-                                width: 20.0,
-                              ),
-                              Column(
-                                children: [
-                                  Text('1'),
-                                  Radio(
-                                    value: 1,
-                                    groupValue: state.userAnswers.values.elementAt(index).mark,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        state.userAnswers.values.elementAt(index).mark = value;
-                                      });
-                                    },
-                                    activeColor: Colors.green,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text('2'),
-                                  Radio(
-                                    value: 2,
-                                    groupValue: state.userAnswers.values.elementAt(index).mark,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        state.userAnswers.values.elementAt(index).mark = value;
-                                      });
-                                    },
-                                    activeColor: Colors.green,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text('3'),
-                                  Radio(
-                                    value: 3,
-                                    groupValue: state.userAnswers.values.elementAt(index).mark,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        state.userAnswers.values.elementAt(index).mark = value;
-                                      });
-                                    },
-                                    activeColor: Colors.green,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text('4'),
-                                  Radio(
-                                    value: 4,
-                                    groupValue: state.userAnswers.values.elementAt(index).mark,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        state.userAnswers.values.elementAt(index).mark = value;
-                                      });
-                                    },
-                                    activeColor: Colors.green,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text('5'),
-                                  Radio(
-                                    value: 5,
-                                    groupValue: state.userAnswers.values.elementAt(index).mark,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        state.userAnswers.values.elementAt(index).mark = value;
-                                      });
-                                    },
-                                    activeColor: Colors.green,
-                                  ),
-                                ],
-                              ),
-                            ],),
+                            Row(
+                              children: [
+                                Text("Teacher's Feedback"),
+                                SizedBox(
+                                  width: 20.0,
+                                ),
+                                Column(
+                                  children: [
+                                    Text('1'),
+                                    Radio(
+                                      value: 1,
+                                      groupValue: state.userAnswers.values.elementAt(index).mark,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          state.userAnswers.values.elementAt(index).mark = value;
+                                        });
+                                      },
+                                      activeColor: Colors.green,
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Text('2'),
+                                    Radio(
+                                      value: 2,
+                                      groupValue: state.userAnswers.values.elementAt(index).mark,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          state.userAnswers.values.elementAt(index).mark = value;
+                                        });
+                                      },
+                                      activeColor: Colors.green,
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Text('3'),
+                                    Radio(
+                                      value: 3,
+                                      groupValue: state.userAnswers.values.elementAt(index).mark,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          state.userAnswers.values.elementAt(index).mark = value;
+                                        });
+                                      },
+                                      activeColor: Colors.green,
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Text('4'),
+                                    Radio(
+                                      value: 4,
+                                      groupValue: state.userAnswers.values.elementAt(index).mark,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          state.userAnswers.values.elementAt(index).mark = value;
+                                        });
+                                      },
+                                      activeColor: Colors.green,
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Text('5'),
+                                    Radio(
+                                      value: 5,
+                                      groupValue: state.userAnswers.values.elementAt(index).mark,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          state.userAnswers.values.elementAt(index).mark = value;
+                                        });
+                                      },
+                                      activeColor: Colors.green,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                             SizedBox(
                               height: 10.0,
                             ),
@@ -235,11 +237,12 @@ class _GradingScreenState extends State<GradingScreen> {
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(10, 1, 20, 5),
                                     child: Container(
-                                      width: MediaQuery.of(context).size.width*0.9,
+                                      width: MediaQuery.of(context).size.width * 0.9,
                                       // height: 200,
                                       child: TextFormField(
                                           //Pole formy wwoda otveta studentom
-                                          minLines: 3, // any number you need (It works as the rows for the textarea)
+                                          minLines: 3,
+                                          // any number you need (It works as the rows for the textarea)
                                           keyboardType: TextInputType.multiline,
                                           maxLines: null,
                                           decoration: new InputDecoration(
@@ -253,8 +256,7 @@ class _GradingScreenState extends State<GradingScreen> {
                                             ),
                                             filled: true,
                                             hintStyle: new TextStyle(color: Colors.black38, fontSize: 18),
-                                            hintText:
-                                                "Some text",
+                                            hintText: "Some text",
                                             fillColor: Colors.white,
                                           ),
                                           controller: teacherUniqueController,
@@ -279,13 +281,27 @@ class _GradingScreenState extends State<GradingScreen> {
                                     onPressed: () {
                                       state.userAnswers.values.elementAt(index).statusList.add("verifyed");
                                       BlocProvider.of<GradeBloc>(context).add(GradeSendAnswerEvent(
-                                          mark: state.userAnswers.values.elementAt(index).mark,
+                                        mark: state.userAnswers.values.elementAt(index).mark,
                                         teachersComment: teacherUniqueController.text,
-                                        sudentsID: state.userAnswers.keys.elementAt(index),
+                                        sudentsID: state.userAnswers.keys.elementAt(index).uid,
                                         quesionID: widget.question.docID,
-                                        statusList:    state.userAnswers.values.elementAt(index).statusList,
-                                          studentList: state.userAnswers.keys.toList(),
+                                        statusList: state.userAnswers.values.elementAt(index).statusList,
+                                        studentList: state.userAnswers.keys.toList(),
                                       ));
+                                      final snackBar = SnackBar(
+                                        content: const Text('Yay! A SnackBar!'),
+                                        action: SnackBarAction(
+                                          label: 'Undo',
+                                          onPressed: () {
+                                            // Some code to undo the change.
+                                          },
+                                        ),
+                                      );
+
+                                      // Find the ScaffoldMessenger in the widget tree
+                                      // and use it to show a SnackBar.
+                                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
                                       // await db
                                       //     .collection("users")
                                       //     .doc(usersAnswers[index].userID)

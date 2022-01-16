@@ -5,6 +5,10 @@ abstract class SudentsEnteryEvent {
   const SudentsEnteryEvent();
 }
 
+class SudentsEnteryDropStateEvent extends SudentsEnteryEvent {
+  const SudentsEnteryDropStateEvent();
+}
+
 class SudentsEnteryLoadingEvent extends SudentsEnteryEvent {
   final String questionID;
 
@@ -18,7 +22,6 @@ class SudentsEnteryLoadedEvent extends SudentsEnteryEvent {
 }
 
 class SudentsEnterySendAnswerEvent extends SudentsEnteryEvent {
-
   final QuestionModel loadedQuestion;
   final String timeCreated;
   final String answer;

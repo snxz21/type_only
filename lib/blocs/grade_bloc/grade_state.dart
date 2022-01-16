@@ -7,7 +7,7 @@ abstract class GradeState {  const GradeState();
 class GradeInitialState extends GradeState {}
 
 class GradeLoadedState extends GradeState {
-  final Map<String, UserAnswerModel> userAnswers;
+  final Map<UserModel, UserAnswerModel> userAnswers;
 
   const GradeLoadedState(this.userAnswers);
 }

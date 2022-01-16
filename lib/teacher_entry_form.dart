@@ -230,7 +230,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                           "question": _questionController.text,
                                           "minLen": int.parse(_minLenController.text),
                                           "maxLen": int.parse(_maxLenController.text),
-                                          "time": int.parse(_timeController.text),
+                                          "time": int.parse(_timeController.text)*60,
                                           "TimeCreated": DateTime.now().millisecondsSinceEpoch
                                         });
                                         // getQuestionList();
@@ -313,7 +313,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                       ),
                                       Row(
                                         children: [
-                                          Text("Time: " + state.loadedQuestionList[index].time.toString()),
+                                          Text("Time: " + (state.loadedQuestionList[index].time/60).toString()),
                                           Text("MinLen: " + state.loadedQuestionList[index].minLen.toString()),
                                           Text("MaxLen: " + state.loadedQuestionList[index].maxLen.toString()),
                                           SizedBox(
