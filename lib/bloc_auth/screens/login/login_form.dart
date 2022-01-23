@@ -1,3 +1,6 @@
+import 'dart:html';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hexcolor/hexcolor.dart';
 // import 'package:logopediya174/blocs/authentication_bloc/authentication_bloc.dart';
 // import 'package:logopediya174/blocs/authentication_bloc/authentication_event.dart';
@@ -237,6 +240,34 @@ class _LoginFormState extends State<LoginForm> {
                                 ),
                               ),
                             ),
+                            InkWell(
+                              onTap: (){
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("Email:"),
+                                      content: TextFormField(controller: _emailController),
+                                      actions: [
+                                    TextButton(
+                                    child: Text("OK"),
+                                    onPressed: () {
+                                      FirebaseAuth.instance.sendPasswordResetEmail(email:  _emailController.text);
+                                      Navigator.pop(context);
+
+                                    },
+                                    ),
+                                      ],
+                                    );
+                                  },
+                                );
+
+
+                              },
+                              child:
+                                Text("Reset Password"),
+
+                            )
                           ],
                         )
                       : BlocProvider<RegisterBloc>(

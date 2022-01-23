@@ -289,7 +289,7 @@ class _GradingScreenState extends State<GradingScreen> {
                                         studentList: state.userAnswers.keys.toList(),
                                       ));
                                       final snackBar = SnackBar(
-                                        content: const Text('Yay! A SnackBar!'),
+                                        content: const Text('Feedback is submitted'),
                                         action: SnackBarAction(
                                           label: 'Undo',
                                           onPressed: () {

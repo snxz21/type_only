@@ -239,7 +239,7 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
                     padding: const EdgeInsets.fromLTRB(10, 1, 20, 5),
                     child: Container(
                       width: double.infinity,
-                      height: 75,
+                      //height: 75,
                       child: TextFormField(
                         //Pole formy wwoda otveta studentom
                         decoration: new InputDecoration(

@@ -127,7 +127,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                 Text("Minimal length of answer (char): "),
                                 Container(
                                   child: ConstrainedBox(
-                                    constraints: BoxConstraints.tight(const Size(60, 30)),
+                                    constraints: BoxConstraints.tight(const Size(120, 30)),
                                     child: TextFormField(
                                       controller: _minLenController,
                                       decoration: new InputDecoration(
@@ -158,7 +158,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                 Text("Maximal length of answer (char): "),
                                 Container(
                                   child: ConstrainedBox(
-                                    constraints: BoxConstraints.tight(const Size(60, 30)),
+                                    constraints: BoxConstraints.tight(const Size(120, 30)),
                                     child: TextFormField(
                                       controller: _maxLenController,
                                       decoration: new InputDecoration(
@@ -189,7 +189,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                 Text("Maximal time  of answer (min):  "),
                                 Container(
                                   child: ConstrainedBox(
-                                    constraints: BoxConstraints.tight(const Size(60, 30)),
+                                    constraints: BoxConstraints.tight(const Size(120, 30)),
                                     child: TextFormField(
                                       controller: _timeController,
                                       decoration: new InputDecoration(

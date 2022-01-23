@@ -40,9 +40,8 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CircleAvatar(
-                        radius: 20,
-                      ),
+                      //CircleAvatar(
+                     //   radius: 20,),
                       Text(" " + state.userData.firstName + " " + state.userData.lastName),
                     ],
                   )
@@ -54,6 +53,23 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                   Visibility(
+                    visible: userDataSave.userStatus=='Teacher',
+                    child: FloatingActionButton.extended(
+                      backgroundColor: Colors.black,
+                      shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+                      onPressed: () {
+                        BlocProvider.of<TeacherEntryBloc>(context).add(TeacherEntryLoadingEvent());
+                        Navigator.push(context, MaterialPageRoute(builder: (_) {
+                          return TeacherEntryForm();
+                        }));
+                      },
+                      heroTag: "TeacherEntryForm",
+                      label: Text("Click here to create new question or grade submitted questions"),
+                    ),
+
+                  ),
+                  SizedBox(width: double.infinity, height: 50),
                   Text('PASTE UNIQUE  QUESTION ID# (you can find it in the message from your teacher)',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
@@ -160,27 +176,7 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
                 ],
               ),
             ),
-            floatingActionButton: Row(
-              children: [
-                Visibility(
-                  visible: userDataSave.userStatus=='Teacher',
-                  child: FloatingActionButton.extended(
-                    backgroundColor: Colors.black,
-                    shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
-                    onPressed: () {
-                      BlocProvider.of<TeacherEntryBloc>(context).add(TeacherEntryLoadingEvent());
-                      Navigator.push(context, MaterialPageRoute(builder: (_) {
-                        return TeacherEntryForm();
-                      }));
-                    },
-                    heroTag: "TeacherEntryForm",
-                    label: Text("TeacherEntryForm"),
-                  ),
-                ),
-                
-                
-              ],
-            ),
+
           );
         } else {
           return Container();
