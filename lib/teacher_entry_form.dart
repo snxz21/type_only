@@ -313,9 +313,9 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                       ),
                                       Row(
                                         children: [
-                                          Text("Time: " + (state.loadedQuestionList[index].time/60).toString()),
-                                          Text("MinLen: " + state.loadedQuestionList[index].minLen.toString()),
-                                          Text("MaxLen: " + state.loadedQuestionList[index].maxLen.toString()),
+                                          Text("Alloted time : " + (state.loadedQuestionList[index].time/60).toString()+ "min;  "),
+                                          Text("Min. # of char.: " + state.loadedQuestionList[index].minLen.toString()+ ";  "),
+                                          Text("Max. # of char.: " + state.loadedQuestionList[index].maxLen.toString()+ ";"),
                                           SizedBox(
                                             width: 20.0,
                                           ),

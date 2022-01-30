@@ -4,7 +4,7 @@
 //
 // final FirebaseAuth _auth = FirebaseAuth.instance;
 //
-// /// Entrypoint example for registering via Email/Password.
+// /// Entrypoint example for registering via Email/.
 // class RegisterPage extends StatefulWidget {
 //   /// The page title.
 //   final String title = 'Registration';

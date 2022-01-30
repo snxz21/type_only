@@ -1,0 +1,53 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter --no-color run --machine --track-widget-creation --device-id=chrome --start-paused --dart-define=flutter.inspector.structuredErrors=true --devtools-server-address=http://127.0.0.1:9100 lib\main.dart
+
+## exception
+
+StateError: Bad state: Cannot add event after closing
+
+```
+#0      _StreamController.add (dart:async/stream_controller.dart:553:24)
+#1      _StreamSinkWrapper.add (dart:async/stream_controller.dart:826:13)
+#2      AppConnection.runMain (package:dwds/src/connections/app_connection.dart:33:22)
+#3      WebDevFS.connect.<anonymous closure> (package:flutter_tools/src/isolated/devfs_web.dart:669:25)
+<asynchronous suspension>
+```
+
+## flutter doctor
+
+```
+[✓] Flutter (Channel stable, 2.2.3, on Microsoft Windows [Version 10.0.19044.1466], locale en-US)
+    • Flutter version 2.2.3 at C:\src\flutter\flutter
+    • Framework revision f4abaa0735 (7 months ago), 2021-07-01 12:46:11 -0700
+    • Engine revision 241c87ad80
+    • Dart version 2.13.4
+
+[✓] Android toolchain - develop for Android devices (Android SDK version 30.0.3)
+    • Android SDK at C:\Users\PC\AppData\Local\Android\sdk
+    • Platform android-30, build-tools 30.0.3
+    • Java binary at: C:\Program Files\Android\Android Studio\jre\bin\java
+    • Java version OpenJDK Runtime Environment (build 11.0.10+0-b96-7249189)
+    • All Android licenses accepted.
+
+[✓] Chrome - develop for the web
+    • Chrome at C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+
+[✓] Android Studio
+    • Android Studio at C:\Program Files\Android\Android Studio
+    • Flutter plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/9212-flutter
+    • Dart plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/6351-dart
+    • android-studio-dir = C:\Program Files\Android\Android Studio
+    • Java version OpenJDK Runtime Environment (build 11.0.10+0-b96-7249189)
+
+[✓] Connected device (2 available)
+    • Chrome (web) • chrome • web-javascript • Google Chrome 97.0.4692.99
+    • Edge (web)   • edge   • web-javascript • Microsoft Edge 97.0.1072.62
+
+• No issues found!
+```

@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:hexcolor/hexcolor.dart';
 // import 'package:logopediya174/blocs/authentication_bloc/authentication_bloc.dart';
 // import 'package:logopediya174/blocs/authentication_bloc/authentication_event.dart';
@@ -139,17 +140,22 @@ class _LoginFormState extends State<LoginForm> {
                   isLogin
                       ? Column(
                           children: [
+                            Text("Welcome to TypeOnly",
+                              style: TextStyle(fontSize: 25,
+                                color: Colors.black),),
                             SizedBox(
                               height: 40,
                             ),
+
                             Container(
                               width: MediaQuery.of(context).size.width * 0.8,
                               height: state.isEmailValid ? 56 : 80,
                               child: TextFormField(
+                                cursorColor: Colors.black,
                                 controller: _emailController,
                                 textAlign: TextAlign.center,
                                 style: new TextStyle(
-                                    color: Colors.white, fontSize: 25),
+                                    color: Colors.black, fontSize: 25),
                                 decoration: new InputDecoration(
                                   border: new OutlineInputBorder(
                                     borderRadius: const BorderRadius.all(
@@ -158,9 +164,9 @@ class _LoginFormState extends State<LoginForm> {
                                   ),
                                   filled: true,
                                   hintStyle: new TextStyle(
-                                      color: Colors.grey[800], fontSize: 25),
-                                  hintText: "E-mail",
-                                  fillColor: Colors.blue,
+                                      color: Colors.black, fontSize: 20),
+                                  hintText: "Click here to enter E-mail",
+                                  fillColor: Colors.black26,
                                   // counterText: "",
                                   // counterStyle: TextStyle(fontSize: 0)
                                 ),
@@ -181,10 +187,11 @@ class _LoginFormState extends State<LoginForm> {
                               width: MediaQuery.of(context).size.width * 0.8,
                               height: state.isPasswordValid ? 56 : 80,
                               child: TextFormField(
+                                cursorColor: Colors.black,
                                 controller: _passwordController,
                                 textAlign: TextAlign.center,
                                 style: new TextStyle(
-                                    color: Colors.grey[800], fontSize: 25),
+                                    color: Colors.black, fontSize: 20),
                                 decoration: new InputDecoration(
                                     border: new OutlineInputBorder(
                                       borderRadius: const BorderRadius.all(
@@ -193,9 +200,9 @@ class _LoginFormState extends State<LoginForm> {
                                     ),
                                     filled: true,
                                     hintStyle: new TextStyle(
-                                        color: Colors.grey[800], fontSize: 25),
-                                    hintText: "Password",
-                                    fillColor: Colors.blue),
+                                        color: Colors.grey[800], fontSize: 20),
+                                    hintText: "Click here to enter Password",
+                                    fillColor: Colors.black26),
                                 obscureText: true,
                                 // autovalidate: true,
                                 autocorrect: false,
@@ -234,12 +241,13 @@ class _LoginFormState extends State<LoginForm> {
                                 label: Text(
                                   isLogin ? "Enter" : 'Create Account',
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color: Colors.black,
                                       fontSize: 25,
                                       fontWeight: FontWeight.w600),
                                 ),
                               ),
                             ),
+                            SizedBox(height: 20),
                             InkWell(
                               onTap: (){
                                 showDialog(
@@ -265,7 +273,11 @@ class _LoginFormState extends State<LoginForm> {
 
                               },
                               child:
-                                Text("Reset Password"),
+                              Text("Click here to reset your password",
+                                  style: TextStyle(fontSize: 16,
+                                  color: Colors.black,
+                                  decoration: TextDecoration.underline,),)
+
 
                             )
                           ],
