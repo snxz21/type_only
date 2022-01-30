@@ -230,7 +230,8 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
                     padding: const EdgeInsets.fromLTRB(10, 1, 10, 5),
                     child: Row(
                       children: [
-                        Text('Time left $_minute minutes : $_second seconds'),
+                        Text('Time left $_minute minutes : $_second seconds',
+                        style: TextStyle(color: Colors.red)),
                         // soobshenie na ekrane schetchika vremeni
                       ],
                     ),
@@ -252,8 +253,9 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
                             ),
                           ),
                           filled: true,
-                          hintStyle: new TextStyle(color: Colors.black38, fontSize: 18),
-                          hintText: "Type your answer here. Important: Do not use copy/paste! ",
+                          hintStyle: new TextStyle(color: Colors.black, fontSize: 16),
+                          hintText: "Type your answer here. Keep your attention to the timer! Do not use copy/paste! "
+                              "Important: make a screenshot of your work after you finished typing and save it to your device!  ",
                           fillColor: Colors.white,
                         ),
                         enabled: isEnable,
