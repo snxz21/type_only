@@ -254,8 +254,8 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
                           ),
                           filled: true,
                           hintStyle: new TextStyle(color: Colors.black, fontSize: 16),
-                          hintText: "Type your answer here. Keep your attention to the timer! Do not use copy/paste! "
-                              "Important: make a screenshot of your work after you finished typing and save it to your device!  ",
+                          hintText: "Type your answer here. DO NOT USE COPY/PASTE or your answer will not be submitted! Keep attention to the timer and do not exceed the allotted time! Note: If you exceed the time -  you will have to retype your entire answer again!"
+                              " Important: make a screenshot of your work after you finished typing and save it to your device! Good luck!",
                           fillColor: Colors.white,
                         ),
                         enabled: isEnable,
