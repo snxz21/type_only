@@ -262,6 +262,7 @@ class _LoginFormState extends State<RegisterForm> {
                             fontSize: 25,
                             fontWeight: FontWeight.w600),
                       ),
+                      heroTag: "ascvdsdbsdbfbsfh",
                     ),
                   ),
                   SizedBox(
