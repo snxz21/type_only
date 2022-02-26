@@ -331,6 +331,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                                 // getQuestionList();
                                               },
                                               label: Text('Delete Question', textScaleFactor: 0.6),
+                                              heroTag: "ngfddzfgdsfg",
                                             ),
                                           ),
                                           SizedBox(

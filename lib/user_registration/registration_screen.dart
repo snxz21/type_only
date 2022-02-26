@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> {
             ),
             FloatingActionButton.extended(onPressed: (){parser(nameController.text); setState(() {
 
-            });}, label: Text("Parse")),
+            });}, label: Text("Parse"), heroTag: "ljndsfbkljndsbflkjnzdbfkjn",),
 
 
           ]))),
