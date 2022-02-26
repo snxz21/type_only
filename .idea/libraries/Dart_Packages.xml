@@ -93,6 +93,13 @@
             </list>
           </value>
         </entry>
+        <entry key="filter_list">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../flutter/flutter/.pub-cache/hosted/pub.dartlang.org/filter_list-1.0.1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="firebase">
           <value>
             <list>
@@ -361,6 +368,7 @@
       <root url="file://$PROJECT_DIR$/../flutter/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.4/lib" />
       <root url="file://$PROJECT_DIR$/../flutter/flutter/.pub-cache/hosted/pub.dartlang.org/equatable-2.0.3/lib" />
       <root url="file://$PROJECT_DIR$/../flutter/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0/lib" />
+      <root url="file://$PROJECT_DIR$/../flutter/flutter/.pub-cache/hosted/pub.dartlang.org/filter_list-1.0.1/lib" />
       <root url="file://$PROJECT_DIR$/../flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase-9.0.2/lib" />
       <root url="file://$PROJECT_DIR$/../flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-3.3.5/lib" />
       <root url="file://$PROJECT_DIR$/../flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_platform_interface-6.1.10/lib" />

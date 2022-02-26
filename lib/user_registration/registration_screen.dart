@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+//import 'package:filter_list/filter_list.dart';
+import 'dart:io';
+import 'dart:convert';
 void main() {
   runApp(MyApp());
 }
@@ -13,6 +15,7 @@ class _MyAppState extends State<MyApp> {
   TextEditingController nameController = TextEditingController();
   String listOfStudents = '';
   var finalList=[];
+  var myFile = File('student.json');
   parser(String str){
     
 
@@ -20,24 +23,21 @@ class _MyAppState extends State<MyApp> {
 
     //split string
     var arr = str.split(',& ');
-    print(str);
+    //print(str);
     for (int i=0; i<arr.length;i++){arr[i]=arr[i].replaceAll(",", " ");};
     // str=str.replaceAll(",", " ");
     //print(str);
-    print(arr);
-    var X = [];
-    arr.forEach((element) {X.add(element.split(' '));});
-    finalList=X;
-    print(X);
-    print (X[0][0]);
-    print (X[0][1]);
-    print (X[2][0]);
+    //print(arr);
+    var listOfParsedStudents = [];
+    arr.forEach((element) {listOfParsedStudents.add(element.split(' '));});
+    finalList=listOfParsedStudents;
+    print(listOfParsedStudents);
+    Map mapOfParsedStudents = {for (var item in listOfParsedStudents) '$item' : 'valueOf$item'};
+   print(mapOfParsedStudents);
+    var encoder = JsonEncoder.withIndent(' ');
+        myFile.writeAsStringSync(encoder.convert(mapOfParsedStudents));
+        print(myFile.readAsStringSync());
 
-
-
-
-    //final str1 = "Dr. Frank Kunik ,1drfrankkdo@aol.com&Alexey Podcheko,apodcheko@auis.edu&";
-    // print(str1.split(new RegExp(r'\s')));
   }
   
   
@@ -56,17 +56,7 @@ class _MyAppState extends State<MyApp> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Paste student names and emails from CSV file here',
-                  ),
-                  // onChanged: (text) {
-                  //   setState(() {
-                  //     listOfStudents = text;
-                  //     print(nameController.text);
-                  //     //you can access nameController in its scope to get
-                  //     // the value of text entered as shown below
-                  //     //fullName = nameController.text;
-                  //   });
-                  // },
-                )),
+                  ),                )),
             Container(
               margin: EdgeInsets.all(20),
               child: Text(finalList.toString()),
