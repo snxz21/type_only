@@ -42,7 +42,20 @@ class SudentsEnteryBloc extends Bloc<SudentsEnteryEvent, SudentsEnteryState> {
         "TimeCreated": DateTime.now().toString().substring(0, 16),
         "Answer": event.answer,
       });
-
+      var db = FirebaseFirestore.instance;
+      try{
+        await db.collection('mail').doc().set({
+          'to':[userDataSave.email],
+          'message': {
+            'subject': 'You have submitted the answer!',
+            'text': "You have submitted the answer on the question: " + event.answer + "\nThis is an automated message, please do not reply ",
+            // 'html': 'This is the <code>HTML</code> section of the email body.',
+          }
+        });
+      }
+      catch(e){
+        print(e);
+      }
 
     }
     else if(event is SudentsEnteryDropStateEvent){
