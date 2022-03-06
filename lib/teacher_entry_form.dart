@@ -57,16 +57,15 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TeacherEntryBloc, TeacherEntryState>(
-      builder: (context, state1) {
-        if (state1 is TeacherEntryInitialState) {
+      builder: (context, state) {
+        if (state is TeacherEntryInitialState) {
           return Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),
           );
-        } else if (state1 is TeacherEntryLoadedState) {
-          var state=state1;
-          
+        } else if (state is TeacherEntryLoadedState) {
+
           return Scaffold(
             appBar: AppBar(
               title: Text('TypeOnly'),
@@ -377,7 +376,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                     ),
             ]),
           );
-        } else if (state1 is OnErrorTeacherEntryState) {
+        } else if (state is OnErrorTeacherEntryState) {
           return Scaffold(
             body: Center(
               child: Text("Error Load Data.\nTry again."),
