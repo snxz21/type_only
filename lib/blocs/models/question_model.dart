@@ -25,7 +25,7 @@ class QuestionModel {
     Map data = doc.data();
 
     return QuestionModel(
-      docID: doc.id??"",
+      docID: doc.id ?? "",
       question: data["question"]??"",
       teacherUID: data["whoCreated"] ?? "",
       time: data["time"] ??10,
