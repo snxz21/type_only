@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:editing_check/blocs/models/question_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'blocs/grade_bloc/grade_bloc.dart';
-import 'blocs/models/user_answer_model.dart';
 
 class GradingScreen extends StatefulWidget {
   GradingScreen(this.question);
@@ -119,9 +117,8 @@ class _GradingScreenState extends State<GradingScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
-                                'Answer from student: ${state.userAnswers.keys.elementAt(index).firstName}'
-                                    ' ${state.userAnswers.keys.elementAt(index).lastName}\n'
+                            Text('Answer from student: ${state.userAnswers.keys.elementAt(index).firstName}'
+                                ' ${state.userAnswers.keys.elementAt(index).lastName}\n'
                                 'email: ${state.userAnswers.keys.elementAt(index).email}\n'
                                 'submitted:${state.userAnswers.values.elementAt(index).timeCreated}'),
                             Container(
@@ -287,6 +284,8 @@ class _GradingScreenState extends State<GradingScreen> {
                                         quesionID: widget.question.docID,
                                         statusList: state.userAnswers.values.elementAt(index).statusList,
                                         studentList: state.userAnswers.keys.toList(),
+                                        studentEmail: state.userAnswers.keys.elementAt(index).email,
+                                        studentAnswer: state.userAnswers.values.elementAt(index).answer,
                                       ));
                                       final snackBar = SnackBar(
                                         content: const Text('Feedback is submitted'),

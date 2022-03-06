@@ -14,6 +14,7 @@ class GradeLoadingEvent extends GradeEvent {
 
 class GradeLoadedEvent extends GradeEvent {
   final Map<UserModel, UserAnswerModel> userAnswers;
+
   // final UserModel userModel;
 
   const GradeLoadedEvent(this.userAnswers);
@@ -26,6 +27,17 @@ class GradeSendAnswerEvent extends GradeEvent {
   final String quesionID;
   final List statusList;
   final List studentList;
+  final String studentEmail;
+  final String studentAnswer;
 
-  const GradeSendAnswerEvent({this.mark, this.teachersComment, this.sudentsID, this.quesionID, this.statusList,this.studentList});
+  const GradeSendAnswerEvent({
+    this.mark,
+    this.teachersComment,
+    this.sudentsID,
+    this.quesionID,
+    this.statusList,
+    this.studentList,
+    @required this.studentEmail,
+    @required this.studentAnswer,
+  });
 }

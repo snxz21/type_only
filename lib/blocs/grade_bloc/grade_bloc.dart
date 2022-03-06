@@ -3,15 +3,14 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:editing_check/bloc_auth/UserBloc/user_bloc.dart';
-import 'package:editing_check/blocs/models/question_model.dart';
 import 'package:editing_check/blocs/models/user_answer_model.dart';
 import 'package:meta/meta.dart';
 
 part 'grade_event.dart';
 
-part 'grade_state.dart';
-
 part 'grade_repository.dart';
+
+part 'grade_state.dart';
 
 class GradeBloc extends Bloc<GradeEvent, GradeState> {
   GradeBloc() : super(GradeInitialState());
@@ -45,6 +44,24 @@ class GradeBloc extends Bloc<GradeEvent, GradeState> {
         "Comment": event.teachersComment,
         "Status": event.statusList,
       });
+      try {
+        await db.collection('mail').doc().set({
+          'to': [event.studentEmail],
+          'message': {
+            'subject': 'Gradining of the question is completed, please review the feedback from teacher',
+            'text': "Your score is :  " +
+                event.mark.toString() +
+                "\nHere are the comments from the teacher:  " +
+                event.teachersComment +
+                "\nYour submission:  " +
+                event.studentAnswer +
+                "\nThis is an automated message, please do not reply ",
+            // 'html': 'This is the <code>HTML</code> section of the email body.',
+          }
+        });
+      } catch (e) {
+        print(e);
+      }
       //
       // yield GradeInitialState();
       // Future.delayed(Duration(milliseconds: 200), () {

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:editing_check/blocs/grade_bloc/grade_bloc.dart';
 import 'package:editing_check/blocs/models/question_model.dart';
+import 'package:editing_check/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -56,14 +57,16 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TeacherEntryBloc, TeacherEntryState>(
-      builder: (context, state) {
-        if (state is TeacherEntryInitialState) {
+      builder: (context, state1) {
+        if (state1 is TeacherEntryInitialState) {
           return Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),
           );
-        } else if (state is TeacherEntryLoadedState) {
+        } else if (state1 is TeacherEntryLoadedState) {
+          var state=state1;
+          
           return Scaffold(
             appBar: AppBar(
               title: Text('TypeOnly'),
@@ -231,7 +234,8 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                           "minLen": int.parse(_minLenController.text),
                                           "maxLen": int.parse(_maxLenController.text),
                                           "time": int.parse(_timeController.text)*60,
-                                          "TimeCreated": DateTime.now().millisecondsSinceEpoch
+                                          "TimeCreated": DateTime.now().millisecondsSinceEpoch,
+                                          "whoCreated": userDataSave.uid
                                         });
                                         // getQuestionList();
                                       },
@@ -331,7 +335,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                                 // getQuestionList();
                                               },
                                               label: Text('Delete Question', textScaleFactor: 0.6),
-                                              heroTag: "ngfddzfgdsfg",
+                                              heroTag: "delete question",
                                             ),
                                           ),
                                           SizedBox(
@@ -373,7 +377,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                     ),
             ]),
           );
-        } else if (state is OnErrorTeacherEntryState) {
+        } else if (state1 is OnErrorTeacherEntryState) {
           return Scaffold(
             body: Center(
               child: Text("Error Load Data.\nTry again."),

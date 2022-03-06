@@ -15,28 +15,22 @@ class _MyAppState extends State<MyApp> {
   TextEditingController nameController = TextEditingController();
   String listOfStudents = '';
   var finalList=[];
-  var myFile = File('student.json');
-  parser(String str){
-    
-
-    //String str = 'Frank Kunik,1drfrankkdo@aol.com,& Alexey Podcheko,apodcheko@auis.edu,& John Smith,jsmith@auis.edu';
-
-    //split string
+    parser(String str){
     var arr = str.split(',& ');
-    //print(str);
     for (int i=0; i<arr.length;i++){arr[i]=arr[i].replaceAll(",", " ");};
-    // str=str.replaceAll(",", " ");
-    //print(str);
-    //print(arr);
     var listOfParsedStudents = [];
     arr.forEach((element) {listOfParsedStudents.add(element.split(' '));});
     finalList=listOfParsedStudents;
-    print(listOfParsedStudents);
-    Map mapOfParsedStudents = {for (var item in listOfParsedStudents) '$item' : 'valueOf$item'};
-   print(mapOfParsedStudents);
-    var encoder = JsonEncoder.withIndent(' ');
-        myFile.writeAsStringSync(encoder.convert(mapOfParsedStudents));
-        print(myFile.readAsStringSync());
+    //print(listOfParsedStudents);
+    List<Map<String,String>> toFirebase = [];
+listOfParsedStudents.forEach((element) { toFirebase.add( {
+  "firstName": element[0],
+  "lastName": element[1],
+  "email": element[2],
+  "password": element[3],
+  "userStatus":element[4],
+},);});
+print(toFirebase);
 
   }
   

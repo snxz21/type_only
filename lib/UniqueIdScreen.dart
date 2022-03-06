@@ -70,24 +70,24 @@ class _UniqueIdScreenState extends State<UniqueIdScreen> {
 
                   ),
                   SizedBox(width: double.infinity, height: 50),
-                  TextButton(
-                      onPressed: () async {
-                        var db = FirebaseFirestore.instance;
-                       try{
-                         await db.collection('mail').doc().set({
-                           'to':['snxz21@mail.ru'],
-                           'message': {
-                             'subject': 'Hello from Firebase!',
-                             'text': 'This is the plaintext section of the email body.',
-                             // 'html': 'This is the <code>HTML</code> section of the email body.',
-                           }
-                         });
-                       }
-                       catch(e){
-                         print(e);
-                       }
-                      },
-                      child: Text("testtest")),
+                  // TextButton(
+                  //     onPressed: () async {
+                  //       var db = FirebaseFirestore.instance;
+                  //      try{
+                  //        await db.collection('mail').doc().set({
+                  //          'to':['snxz21@mail.ru'],
+                  //          'message': {
+                  //            'subject': 'Hello from Firebase!',
+                  //            'text': 'This is the plaintext section of the email body.',
+                  //            // 'html': 'This is the <code>HTML</code> section of the email body.',
+                  //          }
+                  //        });
+                  //      }
+                  //      catch(e){
+                  //        print(e);
+                  //      }
+                  //     },
+                  //     child: Text("testtest")),
                   Text('PASTE UNIQUE  QUESTION ID# (you can find it in the message from your teacher)',
                       textAlign: TextAlign.center,
                       style: const TextStyle(

@@ -27,7 +27,7 @@ class QuestionModel {
     return QuestionModel(
       docID: doc.id??"",
       question: data["question"]??"",
-      teacherUID: data["teacherUID"] ?? "",
+      teacherUID: data["whoCreated"] ?? "",
       time: data["time"] ??10,
       maxLen: data["maxLen"] ?? 10,
       minLen: data["minLen"]?? 10,
