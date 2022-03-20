@@ -41,7 +41,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }) async* {
     yield RegisterState.loading();
     try {
-      await _userRepository.signUp(email, password, name, phone);
+      await _userRepository.signUp(email: email, password: password, firstName: "", lastName: "", userStatus: "");
+      // await _userRepository.signUp(email, password, name, phone);
       yield RegisterState.success();
     } catch (error) {
       print(error);

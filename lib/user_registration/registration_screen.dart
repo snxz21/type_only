@@ -1,5 +1,11 @@
+import 'dart:developer' as dev;
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
+
+import '../bloc_auth/user_repository.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -29,6 +35,7 @@ class _ParserScreenState extends State<ParserScreen> {
   TextEditingController nameController = TextEditingController();
   String listOfStudents = '';
   var finalList = [];
+  bool isNewRegEnd = true;
   List<Map<String, String>> toFirebase = [];
 
   parser(String str) {
@@ -48,9 +55,9 @@ class _ParserScreenState extends State<ParserScreen> {
       const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
       Random _rnd = Random();
 
-      String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
-          length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
-      element [3]=getRandomString(6);
+      String getRandomString(int length) =>
+          String.fromCharCodes(Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+      element[3] = getRandomString(6);
       toFirebase.add(
         {
           "firstName": element[0],
@@ -58,6 +65,7 @@ class _ParserScreenState extends State<ParserScreen> {
           "email": element[2],
           "password": element[3],
           "userStatus": element[4],
+          "regStatus": '',
         },
       );
     });
@@ -67,9 +75,9 @@ class _ParserScreenState extends State<ParserScreen> {
   @override
   void initState() {
     super.initState();
-    nameController.text="Frank Kunik,1drfrankkdo@aol.com,asdfg,Teacher,& "
-    "Alexey Podcheko,apodcheko@auis.edu,123456,Student,& "
-    "John Smith,jsmith11@auis.edu,456567,Student";
+    nameController.text = "Frank Kunik,1drfrankkdo@aol.com,asdfg,Teacher,& "
+        "Alexey Podcheko,apodcheko@auis.edu,123456,Student,& "
+        "John Smith,jsmith11@auis.edu,456567,Student";
   }
 
   @override
@@ -109,42 +117,109 @@ class _ParserScreenState extends State<ParserScreen> {
               heroTag: "ljndsfbkljndsbflkjnzdbfkjn",
             ),
             Expanded(
-                  child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 20,
-                    childAspectRatio: 20/1,
-                  ),
+              child: ListView.builder(
+                  // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  //   crossAxisCount: 1,
+                  //   mainAxisSpacing: 10,
+                  //   crossAxisSpacing: 20,
+                  //   childAspectRatio: 20 / 1,
+                  // ),
                   itemCount: toFirebase.length != 0 ? toFirebase.length : 1,
                   itemBuilder: (BuildContext ctx, index) {
                     if (toFirebase.length == 0) {
                       return Container();
                     }
-                    return Container(
-                      alignment: Alignment.center,
-                      padding:EdgeInsets.symmetric(horizontal: 10),
-                                                                                        child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                          Column(
+                    var containerColor = Colors.grey.shade500;
+                    if (toFirebase[index]["regStatus"] == '') {
+                      containerColor = Colors.grey.shade500;
+                    } else if (toFirebase[index]["regStatus"] == 'accept') {
+                      containerColor = Colors.green.shade100;
+                    } else if (toFirebase[index]["regStatus"] == 'emailAlready') {
+                      containerColor = Colors.yellow.shade100;
+                    } else {
+                      containerColor = Colors.redAccent.shade100;
+                    }
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      child: Container(
+                        alignment: Alignment.center,
 
-                            children: [
-                              Expanded(child: Text("First & Last Name: " + toFirebase[index]["firstName"]+" " + toFirebase[index]["lastName"])),
-                              Expanded(child: Text("email: " + toFirebase[index]["email"])),
-                              Expanded(child: Text("Status: "+ toFirebase[index]["userStatus"])),
-                              Expanded(child: Text("Password: "+ toFirebase[index]["password"])),
-                            ],
-                          ),
-                          FloatingActionButton.extended(onPressed: (){}, label: Text("Register")),
-                                                  ],
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        width: MediaQuery.of(context).size.width * 0.95,
+                        height: 120,
+                        decoration: BoxDecoration(color: containerColor, borderRadius: BorderRadius.circular(0)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                                Expanded(
+                                    child: Text(
+                                        "First & Last Name: " + toFirebase[index]["firstName"] + " " + toFirebase[index]["lastName"])),
+                                Expanded(child: Text("email: " + toFirebase[index]["email"])),
+                                Expanded(child: Text("Status: " + toFirebase[index]["userStatus"])),
+                                Expanded(child: Text("Password: " + toFirebase[index]["password"])),
+                                Text("regStatus: " + toFirebase[index]["regStatus"]),
+                              ],
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                            ),
+                            FloatingActionButton.extended(
+                              onPressed: !isNewRegEnd
+                                  ? () {
+                                      dev.log('empty click');
+                                    }
+                                  : () async {
+                                      setState(() {
+                                        isNewRegEnd = false;
+                                      });
+
+                                      UserRepository userRep = UserRepository();
+                                      try {
+                                        UserCredential regUserData = await userRep.signUp(
+                                          email: toFirebase[index]["email"],
+                                          password: toFirebase[index]["password"],
+                                          userStatus: toFirebase[index]["userStatus"],
+                                          firstName: toFirebase[index]["firstName"],
+                                          lastName: toFirebase[index]["lastName"],
+                                        );
+
+                                        if (regUserData != null) {
+                                          print(regUserData.user.uid);
+                                          dev.log(regUserData.user.uid);
+                                          toFirebase[index]["regStatus"] = 'accept';
+                                        }
+                                        isNewRegEnd = await userRep.writeDBUserData(
+                                          email: toFirebase[index]["email"],
+                                          regUserData: regUserData,
+                                          userStatus: toFirebase[index]["userStatus"],
+                                          firstName: toFirebase[index]["firstName"],
+                                          lastName: toFirebase[index]["lastName"],
+                                        );
+                                      } on FirebaseAuthException catch (e) {
+                                        print('create user error $e');
+                                        if (e.message.contains('The email address is already'))
+                                          toFirebase[index]["regStatus"] = 'emailAlready';
+                                        else
+                                          toFirebase[index]["regStatus"] = e.message;
+                                      }
+                                      Future.delayed(Duration(seconds: 5), () {
+                                        userRep.signOut();
+                                        setState(() {
+                                          isNewRegEnd = true;
+                                        });
+                                      });
+                                    },
+                              label: Text("Register"),
+                              backgroundColor: isNewRegEnd ? Colors.blue : Colors.grey,
+                            ),
+                          ],
+                        ),
+                        // "firstName": element[0],
+                        // "lastName": element[1],
+                        // "email": element[2],
+                        // "password": element[3],
+                        // "userStatus": element[4],
                       ),
-                      // "firstName": element[0],
-                      // "lastName": element[1],
-                      // "email": element[2],
-                      // "password": element[3],
-                      // "userStatus": element[4],
-                      decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(0)),
                     );
                   }),
             ),
