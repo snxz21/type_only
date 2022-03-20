@@ -20,6 +20,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
   TextEditingController _minLenController = TextEditingController();
   TextEditingController _maxLenController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
+
   // QuestionModel myQestion = QuestionModel();
   // List<QuestionModel> state.loadedQuestionList = [];
   double formHeight = 0;
@@ -65,7 +66,6 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
             ),
           );
         } else if (state is TeacherEntryLoadedState) {
-
           return Scaffold(
             appBar: AppBar(
               title: Text('TypeOnly'),
@@ -74,307 +74,341 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
             body: Column(
                 //verticalDirection: VerticalDirection.down,
                 children: [
-              Container(width: double.infinity, height: 20),
-              Container(
-                width: 120,
-                height: 40,
-                child: FloatingActionButton.extended(
-                    heroTag: "create new Question",
-                    backgroundColor: Colors.black,
-                    shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
-                    onPressed: () {
-                      setState(() {
-                        formHeight = 360;
-                      });
-                    },
-                    label: Text('New Question')),
-              ),
-              Container(width: double.infinity, height: 20),
-              AnimatedContainer(
-                  height: formHeight,
-                  duration: Duration(milliseconds: 100),
-                  child: Card(
-                      elevation: 7,
-                      shape: BeveledRectangleBorder(
-                        borderRadius: BorderRadius.circular(1.0),
-                      ),
-                      child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(children: [
-                            Container(
-                              width: double.infinity,
-                              height: 100,
-                              child: TextFormField(
-                                controller: _questionController,
-                                decoration: new InputDecoration(
-                                  border: new OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(1.0),
-                                    ),
-                                  ),
-                                  filled: true,
-                                  hintStyle: new TextStyle(color: Colors.grey[800], fontSize: 18),
-                                  hintText: "Type your question here ",
-                                  fillColor: Colors.white24,
-                                ),
-                                maxLines: 3,
-                              ),
-                            ),
-                            Container(width: double.infinity, height: 20),
-                            Row(
-                              children: [
-                                Text("Minimal length of answer (char): "),
-                                Container(
-                                  child: ConstrainedBox(
-                                    constraints: BoxConstraints.tight(const Size(120, 30)),
-                                    child: TextFormField(
-                                      controller: _minLenController,
-                                      decoration: new InputDecoration(
-                                        border: new OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.black,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                            const Radius.circular(1.0),
-                                          ),
-                                        ),
-                                        filled: true,
-                                        hintStyle: new TextStyle(color: Colors.grey[800], fontSize: 8),
-                                        hintText: "",
-                                        fillColor: Colors.white24,
-                                      ),
-                                      maxLines: 1,
-                                    ),
-                                  ),
-                                ),
-
-                                //TextFormField()
-                              ],
-                            ),
-                            Container(width: double.infinity, height: 20),
-                            Row(
-                              children: [
-                                Text("Maximal length of answer (char): "),
-                                Container(
-                                  child: ConstrainedBox(
-                                    constraints: BoxConstraints.tight(const Size(120, 30)),
-                                    child: TextFormField(
-                                      controller: _maxLenController,
-                                      decoration: new InputDecoration(
-                                        border: new OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.black,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                            const Radius.circular(1.0),
-                                          ),
-                                        ),
-                                        filled: true,
-                                        hintStyle: new TextStyle(color: Colors.grey[800], fontSize: 8),
-                                        hintText: "",
-                                        fillColor: Colors.white24,
-                                      ),
-                                      maxLines: 1,
-                                    ),
-                                  ),
-                                ),
-
-                                //TextFormField()
-                              ],
-                            ),
-                            Container(width: double.infinity, height: 20),
-                            Row(
-                              children: [
-                                Text("Maximal time  of answer (min):  "),
-                                Container(
-                                  child: ConstrainedBox(
-                                    constraints: BoxConstraints.tight(const Size(120, 30)),
-                                    child: TextFormField(
-                                      controller: _timeController,
-                                      decoration: new InputDecoration(
-                                        border: new OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.black,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                            const Radius.circular(1.0),
-                                          ),
-                                        ),
-                                        filled: true,
-                                        hintStyle: new TextStyle(color: Colors.grey[800], fontSize: 8),
-                                        hintText: "",
-                                        fillColor: Colors.white24,
-                                      ),
-                                      maxLines: 1,
-                                    ),
-                                  ),
-                                ),
-
-                                //TextFormField()
-                              ],
-                            ),
-                            Container(width: double.infinity, height: 20),
-                            Row(
-                              children: [
-                                Container(
-                                  width: 100,
-                                  height: 40,
-                                  child: FloatingActionButton.extended(
-                                      heroTag: "getQuestionList",
-                                      backgroundColor: Colors.black,
-                                      shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
-                                      onPressed: () async {
-                                        formHeight = 0;
-                                        await db.collection("Tests").doc().set({
-                                          "question": _questionController.text,
-                                          "minLen": int.parse(_minLenController.text),
-                                          "maxLen": int.parse(_maxLenController.text),
-                                          "time": int.parse(_timeController.text)*60,
-                                          "TimeCreated": DateTime.now().millisecondsSinceEpoch,
-                                          "whoCreated": userDataSave.uid
-                                        });
-                                        // getQuestionList();
-                                      },
-                                      label: Text('Save')),
-                                ),
-                              ],
-                            ),
-                          ])))),
-               Expanded(
-                      // width: MediaQuery.of(context).size.width * 0.95,
-                      // height: 500,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: state.loadedQuestionList.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text("Test unique ID: " + state.loadedQuestionList[index].docID),
-                                          SizedBox(
-                                            width: 50.0,
-                                          ),
-                                          Container(
-                                            width: 80,
-                                            height: 30,
-                                            child: FloatingActionButton.extended(
-                                              heroTag: "Copy question teach form",
-                                              backgroundColor: Colors.black,
-                                              shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
-                                              onPressed: () async {
-                                                Clipboard.setData(
-                                                    new ClipboardData(text: state.loadedQuestionList[index].docID));
-                                                Scaffold.of(context)
-                                                    .showSnackBar(SnackBar(content: Text('text copied')));
-                                              },
-                                              label: Column(
-                                                children: [
-                                                  Text(
-                                                    'Copy question',
-                                                    textScaleFactor: 0.6,
-                                                  ),
-                                                  Text(
-                                                    'Unique ID#',
-                                                    textScaleFactor: 0.6,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 10.0,
-                                      ),
-                                      Container(
-                                        width: MediaQuery.of(context).size.width,
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.black,
-                                          ),
-                                          borderRadius: BorderRadius.circular(1.0),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(2.0),
-                                          child: Text("Text of Question: " + state.loadedQuestionList[index].question),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10.0,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text("Alloted time : " + (state.loadedQuestionList[index].time/60).toString()+ "min;  "),
-                                          Text("Min. # of char.: " + state.loadedQuestionList[index].minLen.toString()+ ";  "),
-                                          Text("Max. # of char.: " + state.loadedQuestionList[index].maxLen.toString()+ ";"),
-                                          SizedBox(
-                                            width: 20.0,
-                                          ),
-                                          Spacer(),
-                                          Container(
-                                            width: 80,
-                                            height: 30,
-                                            child: FloatingActionButton.extended(
-                                              backgroundColor: Colors.black,
-                                              shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
-                                              onPressed: () async {
-                                                db.collection('Tests').doc(state.loadedQuestionList[index].docID).delete();
-                                                // getQuestionList();
-                                              },
-                                              label: Text('Delete Question', textScaleFactor: 0.6),
-                                              heroTag: "delete question",
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 20.0,
-                                          ),
-                                          Container(
-                                            width: 80,
-                                            height: 30,
-                                            child: FloatingActionButton.extended(
-                                              backgroundColor: Colors.black,
-                                              shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
-                                              onPressed: () async {
-                                                BlocProvider.of<GradeBloc>(context).add(GradeLoadingEvent(
-
-                                                  questionID: state.loadedQuestionList[index].docID,
-                                                  student: state.loadedQuestionList[index].listOfStudents
-                                                ));
-                                                Navigator.push(context, MaterialPageRoute(builder: (_) {
-                                                  return GradingScreen(state.loadedQuestionList[index]);
-                                                }));
-                                              },
-                                              label: Text(
-                                                'Grade Answers',
-                                                textScaleFactor: 0.6,
-                                              ),
-                                              heroTag: "Grade Answersteach form$index",
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
+                  Container(width: double.infinity, height: 20),
+                  Container(
+                    width: 120,
+                    height: 40,
+                    child: FloatingActionButton.extended(
+                        heroTag: "create new Question",
+                        backgroundColor: Colors.black,
+                        shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+                        onPressed: () {
+                          setState(() {
+                            formHeight = 360;
+                          });
                         },
-                      ),
+                        label: Text('New Question')),
+                  ),
+                  Container(width: double.infinity, height: 20),
+                  AnimatedContainer(
+                      height: formHeight,
+                      duration: Duration(milliseconds: 100),
+                      child: Card(
+                          elevation: 7,
+                          shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(1.0),
+                          ),
+                          child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(children: [
+                                Container(
+                                  width: double.infinity,
+                                  height: 100,
+                                  child: TextFormField(
+                                    controller: _questionController,
+                                    decoration: new InputDecoration(
+                                      border: new OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.black,
+                                        ),
+                                        borderRadius: const BorderRadius.all(
+                                          const Radius.circular(1.0),
+                                        ),
+                                      ),
+                                      filled: true,
+                                      hintStyle: new TextStyle(color: Colors.grey[800], fontSize: 18),
+                                      hintText: "Type your question here ",
+                                      fillColor: Colors.white24,
+                                    ),
+                                    maxLines: 3,
+                                  ),
+                                ),
+                                Container(width: double.infinity, height: 20),
+                                Row(
+                                  children: [
+                                    Text("Minimal length of answer (char): "),
+                                    Container(
+                                      child: ConstrainedBox(
+                                        constraints: BoxConstraints.tight(const Size(120, 30)),
+                                        child: TextFormField(
+                                          controller: _minLenController,
+                                          decoration: new InputDecoration(
+                                            border: new OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Colors.black,
+                                              ),
+                                              borderRadius: const BorderRadius.all(
+                                                const Radius.circular(1.0),
+                                              ),
+                                            ),
+                                            filled: true,
+                                            hintStyle: new TextStyle(color: Colors.grey[800], fontSize: 8),
+                                            hintText: "",
+                                            fillColor: Colors.white24,
+                                          ),
+                                          maxLines: 1,
+                                        ),
+                                      ),
+                                    ),
+
+                                    //TextFormField()
+                                  ],
+                                ),
+                                Container(width: double.infinity, height: 20),
+                                Row(
+                                  children: [
+                                    Text("Maximal length of answer (char): "),
+                                    Container(
+                                      child: ConstrainedBox(
+                                        constraints: BoxConstraints.tight(const Size(120, 30)),
+                                        child: TextFormField(
+                                          controller: _maxLenController,
+                                          decoration: new InputDecoration(
+                                            border: new OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Colors.black,
+                                              ),
+                                              borderRadius: const BorderRadius.all(
+                                                const Radius.circular(1.0),
+                                              ),
+                                            ),
+                                            filled: true,
+                                            hintStyle: new TextStyle(color: Colors.grey[800], fontSize: 8),
+                                            hintText: "",
+                                            fillColor: Colors.white24,
+                                          ),
+                                          maxLines: 1,
+                                        ),
+                                      ),
+                                    ),
+
+                                    //TextFormField()
+                                  ],
+                                ),
+                                Container(width: double.infinity, height: 20),
+                                Row(
+                                  children: [
+                                    Text("Maximal time  of answer (min):  "),
+                                    Container(
+                                      child: ConstrainedBox(
+                                        constraints: BoxConstraints.tight(const Size(120, 30)),
+                                        child: TextFormField(
+                                          controller: _timeController,
+                                          decoration: new InputDecoration(
+                                            border: new OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Colors.black,
+                                              ),
+                                              borderRadius: const BorderRadius.all(
+                                                const Radius.circular(1.0),
+                                              ),
+                                            ),
+                                            filled: true,
+                                            hintStyle: new TextStyle(color: Colors.grey[800], fontSize: 8),
+                                            hintText: "",
+                                            fillColor: Colors.white24,
+                                          ),
+                                          maxLines: 1,
+                                        ),
+                                      ),
+                                    ),
+
+                                    //TextFormField()
+                                  ],
+                                ),
+                                Container(width: double.infinity, height: 20),
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      height: 40,
+                                      child: FloatingActionButton.extended(
+                                          heroTag: "getQuestionList",
+                                          backgroundColor: Colors.black,
+                                          shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+                                          onPressed: () async {
+                                            formHeight = 0;
+                                            await db.collection("Tests").doc().set({
+                                              "question": _questionController.text,
+                                              "minLen": int.parse(_minLenController.text),
+                                              "maxLen": int.parse(_maxLenController.text),
+                                              "time": int.parse(_timeController.text) * 60,
+                                              "TimeCreated": DateTime.now().millisecondsSinceEpoch,
+                                              "whoCreated": userDataSave.uid
+                                            });
+                                            // getQuestionList();
+                                          },
+                                          label: Text('Save')),
+                                    ),
+                                  ],
+                                ),
+                              ])))),
+                  Expanded(
+                    // width: MediaQuery.of(context).size.width * 0.95,
+                    // height: 500,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: state.loadedQuestionList.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text("Test unique ID: " + state.loadedQuestionList[index].docID),
+                                        SizedBox(
+                                          width: 50.0,
+                                        ),
+                                        Container(
+                                          width: 80,
+                                          height: 30,
+                                          child: FloatingActionButton.extended(
+                                            heroTag: "Copy question teach form",
+                                            backgroundColor: Colors.black,
+                                            shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+                                            onPressed: () async {
+                                              Clipboard.setData(new ClipboardData(text: state.loadedQuestionList[index].docID));
+                                              Scaffold.of(context).showSnackBar(SnackBar(content: Text('text copied')));
+                                            },
+                                            label: Text(
+                                              'Copy question\nUnique ID#',
+                                              textScaleFactor: 0.6,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 80,
+                                          height: 30,
+                                          child: FloatingActionButton.extended(
+                                            heroTag: "edit question",
+                                            backgroundColor: Colors.black,
+                                            shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+                                            onPressed: () async {
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  ///
+                                                  ///
+                                                  ///TODO
+                                                  ///тут создаем локальные контроллеры для TextFormField
+                                                  ///
+                                                  ///
+                                                  TextEditingController  localQuestionController = TextEditingController();
+                                                  localQuestionController.text =  state.loadedQuestionList[index].question;
+                                                  return AlertDialog(
+                                                    title: Text('test'),
+                                                    content: Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        SizedBox(
+                                                          child: TextFormField(
+                                                             controller: localQuestionController,
+                                                          ),
+                                                          width: 150,
+                                                          height: 100,
+                                                        ),
+                                                        Text('test'),
+                                                        Text('test'),
+                                                        Text('test'),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            label: Text(
+                                              'Edit question',
+                                              textScaleFactor: 0.6,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 10.0,
+                                    ),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.black,
+                                        ),
+                                        borderRadius: BorderRadius.circular(1.0),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: Text("Text of Question: " + state.loadedQuestionList[index].question),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10.0,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text("Alloted time : " + (state.loadedQuestionList[index].time / 60).toString() + "min;  "),
+                                        Text("Min. # of char.: " + state.loadedQuestionList[index].minLen.toString() + ";  "),
+                                        Text("Max. # of char.: " + state.loadedQuestionList[index].maxLen.toString() + ";"),
+                                        SizedBox(
+                                          width: 20.0,
+                                        ),
+                                        Spacer(),
+                                        Container(
+                                          width: 80,
+                                          height: 30,
+                                          child: FloatingActionButton.extended(
+                                            backgroundColor: Colors.black,
+                                            shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+                                            onPressed: () async {
+                                              db.collection('Tests').doc(state.loadedQuestionList[index].docID).delete();
+                                              // getQuestionList();
+                                            },
+                                            label: Text('Delete Question', textScaleFactor: 0.6),
+                                            heroTag: "delete question",
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 20.0,
+                                        ),
+                                        Container(
+                                          width: 80,
+                                          height: 30,
+                                          child: FloatingActionButton.extended(
+                                            backgroundColor: Colors.black,
+                                            shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+                                            onPressed: () async {
+                                              BlocProvider.of<GradeBloc>(context).add(GradeLoadingEvent(
+                                                  questionID: state.loadedQuestionList[index].docID,
+                                                  student: state.loadedQuestionList[index].listOfStudents));
+                                              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                                                return GradingScreen(state.loadedQuestionList[index]);
+                                              }));
+                                            },
+                                            label: Text(
+                                              'Grade Answers',
+                                              textScaleFactor: 0.6,
+                                            ),
+                                            heroTag: "Grade Answersteach form$index",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
                     ),
-            ]),
+                  ),
+                ]),
           );
         } else if (state is OnErrorTeacherEntryState) {
           return Scaffold(
