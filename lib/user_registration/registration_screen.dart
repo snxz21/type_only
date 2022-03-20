@@ -111,10 +111,10 @@ class _ParserScreenState extends State<ParserScreen> {
             Expanded(
                   child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
+                    crossAxisCount: 1,
                     mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    childAspectRatio: 4/2,
+                    crossAxisSpacing: 20,
+                    childAspectRatio: 20/1,
                   ),
                   itemCount: toFirebase.length != 0 ? toFirebase.length : 1,
                   itemBuilder: (BuildContext ctx, index) {
@@ -123,12 +123,19 @@ class _ParserScreenState extends State<ParserScreen> {
                     }
                     return Container(
                       alignment: Alignment.center,
-                      child: Column(
-                        children: [
-                          Text(toFirebase[index]["firstName"]+" " + toFirebase[index]["lastName"]),
-                          Text(toFirebase[index]["email"]),
-                          Text(toFirebase[index]["userStatus"]),
-                          Text(toFirebase[index]["password"]),
+                      padding:EdgeInsets.symmetric(horizontal: 10),
+                                                                                        child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                          Column(
+
+                            children: [
+                              Expanded(child: Text("First & Last Name: " + toFirebase[index]["firstName"]+" " + toFirebase[index]["lastName"])),
+                              Expanded(child: Text("email: " + toFirebase[index]["email"])),
+                              Expanded(child: Text("Status: "+ toFirebase[index]["userStatus"])),
+                              Expanded(child: Text("Password: "+ toFirebase[index]["password"])),
+                            ],
+                          ),
                           FloatingActionButton.extended(onPressed: (){}, label: Text("Register")),
                                                   ],
                       ),
@@ -137,7 +144,7 @@ class _ParserScreenState extends State<ParserScreen> {
                       // "email": element[2],
                       // "password": element[3],
                       // "userStatus": element[4],
-                      decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(15)),
+                      decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(0)),
                     );
                   }),
             ),
