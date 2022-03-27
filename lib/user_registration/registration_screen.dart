@@ -75,7 +75,7 @@ class _ParserScreenState extends State<ParserScreen> {
   @override
   void initState() {
     super.initState();
-    nameController.text = "Frank Kunik,1drfrankkdo@aol.com,asdfg,Teacher,& "
+    nameController.text =
         "Alexey Podcheko,apodcheko@auis.edu,123456,Student,& "
         "John Smith,jsmith11@auis.edu,456567,Student";
   }
@@ -104,17 +104,18 @@ class _ParserScreenState extends State<ParserScreen> {
                     labelText: 'Paste student names and emails from CSV file here',
                   ),
                 )),
-            Container(
-              margin: EdgeInsets.all(20),
-              child: Text(finalList.toString()),
-            ),
-            FloatingActionButton.extended(
+                       FloatingActionButton.extended(
               onPressed: () {
                 parser(nameController.text);
                 setState(() {});
               },
               label: Text("Parse"),
-              heroTag: "ljndsfbkljndsbflkjnzdbfkjn",
+              heroTag: "Parsing Button",
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(0))
+              ),
+              backgroundColor: Colors.black,
+
             ),
             Expanded(
               child: ListView.builder(
