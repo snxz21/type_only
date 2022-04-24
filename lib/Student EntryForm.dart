@@ -232,6 +232,10 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
                       children: [
                         Text('Time left $_minute minutes : $_second seconds',
                         style: TextStyle(color: Colors.red)),
+                        Visibility(visible: state.loadedQuestion.minLen >= uniqueAnswerController.text.length,
+                          child: Text('Symbols  left ${state.loadedQuestion.minLen-uniqueAnswerController.text.length}',
+                              style: TextStyle(color: Colors.red)),
+                        ),
                         // soobshenie na ekrane schetchika vremeni
                       ],
                     ),
