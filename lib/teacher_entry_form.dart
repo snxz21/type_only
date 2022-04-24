@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:editing_check/blocs/grade_bloc/grade_bloc.dart';
-import 'package:editing_check/blocs/models/question_model.dart';
 import 'package:editing_check/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -273,14 +272,19 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                             backgroundColor: Colors.black,
                                             shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
                                             onPressed: () async {
-                                              Clipboard.setData(new ClipboardData(text: state.loadedQuestionList[index].docID));
-                                              Scaffold.of(context).showSnackBar(SnackBar(content: Text('text copied')));
+                                              Clipboard.setData(
+                                                  new ClipboardData(text: state.loadedQuestionList[index].docID));
+                                              Scaffold.of(context)
+                                                  .showSnackBar(SnackBar(content: Text('text copied')));
                                             },
                                             label: Text(
                                               'Copy question\nUnique ID#',
                                               textScaleFactor: 0.6,
                                             ),
                                           ),
+                                        ),
+                                        SizedBox(
+                                          width: 20.0,
                                         ),
                                         Container(
                                           width: 80,
@@ -298,25 +302,146 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                                   ///TODO
                                                   ///тут создаем локальные контроллеры для TextFormField
                                                   ///
-                                                  ///
-                                                  TextEditingController  localQuestionController = TextEditingController();
-                                                  localQuestionController.text =  state.loadedQuestionList[index].question;
-                                                  return AlertDialog(
-                                                    title: Text('test'),
+                                                  ///Sozdaem local contollery
+                                                  TextEditingController localQuestionController =
+                                                      TextEditingController();
+                                                 ///controller texta voprosa
+                                                  TextEditingController localMaxLenghtController =
+                                                  TextEditingController();
+                                                  /// controller max dlinny voprosa
+                                                  TextEditingController localMinLenghtController =
+                                                  TextEditingController();
+                                                  /// controller min dlinny voprosa
+                                                  TextEditingController localMinTimeController =
+                                                  TextEditingController();
+                                                  /// controller dlya vremeni  otveta
+
+
+                                                  /// Zadayem pervonachalniye znacheniya
+                                                  localQuestionController.text =
+                                                      state.loadedQuestionList[index].question;
+                                                  localMaxLenghtController.text =
+                                                      state.loadedQuestionList[index].maxLen.toString();
+                                                  localMinLenghtController.text =
+                                                      state.loadedQuestionList[index].minLen.toString();
+                                                  localMinTimeController.text =
+                                                     (state.loadedQuestionList[index].time/60).toString();
+
+
+                                                     return AlertDialog(
+                                                    actions: [
+                                                      TextButton(
+                                                          onPressed: () {
+                                                            FirebaseFirestore.instance
+                                                                .collection("Tests")
+                                                                .doc(state.loadedQuestionList[index].docID)
+                                                                .update({
+                                                              /// Ukazyvaem nazvanie w baze "questoin"
+                                                              /// i cherez : peredayem to chto hochet sohranit
+                                                              'question': localQuestionController.text,
+                                                              'maxLen': int.parse(localMaxLenghtController.text),
+                                                              'minLen': int.parse(localMinLenghtController.text),
+                                                              'time' : int.parse(localMinTimeController.text)*60,
+                                                              //state.loadedQuestionList[index].maxLen
+                                                              //state.loadedQuestionList[index].minLen
+                                                              //state.loadedQuestionList[index].time
+                                                              //Peredelat zdes
+                                                            });
+                                                            Navigator.pop(context);
+                                                          },
+                                                          style: TextButton.styleFrom(
+                                                            primary: Colors.white,
+                                                            backgroundColor: Colors.black,
+                                                            onSurface: Colors.black,
+                                                          ),
+                                                          child: Text("Save"))
+                                                    ],
+                                                    //title: Text('Edit text of the question below:'),
                                                     content: Column(
                                                       mainAxisSize: MainAxisSize.min,
                                                       children: [
+
                                                         SizedBox(
                                                           child: TextFormField(
-                                                             controller: localQuestionController,
+
+                                                            controller: localQuestionController,
+                                                            maxLines: 10,
+                                                            minLines: 3,
+                                                            decoration: InputDecoration(
+                                                              hintText: 'Edit/modify content of the quiestion',
+                                                              labelText: 'Edit/modify content of the quiestion',
+                                                              border: OutlineInputBorder(
+                                                                borderRadius: BorderRadius.circular(10.0),
+                                                              ),
+                                                                                                                        ),
+
                                                           ),
-                                                          width: 150,
-                                                          height: 100,
+                                                          // maximalnaya vysota ne ogranichena
+                                                          width: 600,
+                                                                                                                   //height: 100,
                                                         ),
-                                                        Text('test'),
-                                                        Text('test'),
-                                                        Text('test'),
-                                                      ],
+                                                  SizedBox(height: 10,),
+                                                        SizedBox( // sozdayem formu vvoda
+                                                          child: TextFormField(
+                                                            decoration: InputDecoration(
+                                                              hintText: 'Edit maximal lenght of answer',
+                                                              labelText: 'Edit maximal lenght of answer',
+                                                  border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(10.0),
+                                                  ),
+                                                            ),
+                                                            /// peredayem nujnii controller
+                                                            controller: localMaxLenghtController,
+
+                                                            maxLines: 10,
+                                                            minLines: 1,
+
+
+
+                                                          ),),
+                                                        SizedBox(height: 10,),
+                                                        SizedBox( // sozdayem formu vvoda
+                                                          child: TextFormField(
+                                                            decoration: InputDecoration(
+                                                              hintText: 'Edit minimal lenght of answer',
+                                                              labelText: 'Edit minimal lenght of answer',
+                                                              border: OutlineInputBorder(
+                                                                borderRadius: BorderRadius.circular(10.0),
+                                                              ),
+                                                            ),
+                                                            /// peredayem nujnii controller
+                                                            controller: localMinLenghtController,
+
+                                                            maxLines: 10,
+                                                            minLines: 1,
+
+
+
+                                                          ),),SizedBox(height: 10,),
+                                                        SizedBox( // sozdayem formu vvoda
+                                                          child: TextFormField(
+                                                            decoration: InputDecoration(
+                                                              hintText: 'Edit alloted time to answer question (in minutes)',
+                                                              labelText: 'Edit alloted time to answer question (in minutes)',
+                                                              border: OutlineInputBorder(
+                                                                borderRadius: BorderRadius.circular(10.0),
+                                                              ),
+                                                            ),
+                                                            /// peredayem nujnii controller
+                                                            controller: localMinTimeController,
+
+                                                            maxLines: 10,
+                                                            minLines: 1,
+
+
+
+                                                          ),),
+                                                          ///shirina i vysota ramki conteinera
+                                                        // width: 100,
+                                                      //    height: 200,
+
+                                                      //  ),
+                                                                                                              ],
                                                     ),
                                                   );
                                                 },
@@ -335,7 +460,7 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                     ),
                                     Container(
                                       width: MediaQuery.of(context).size.width,
-                                      height: 40,
+                                      //height: 40,
                                       decoration: BoxDecoration(
                                         border: Border.all(
                                           color: Colors.black,
@@ -344,7 +469,8 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                       ),
                                       child: Padding(
                                         padding: const EdgeInsets.all(2.0),
-                                        child: Text("Text of Question: " + state.loadedQuestionList[index].question),
+                                        child:
+                                            Text("Text of Question: " + state.loadedQuestionList[index].question),
                                       ),
                                     ),
                                     SizedBox(
@@ -352,9 +478,15 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                     ),
                                     Row(
                                       children: [
-                                        Text("Alloted time : " + (state.loadedQuestionList[index].time / 60).toString() + "min;  "),
-                                        Text("Min. # of char.: " + state.loadedQuestionList[index].minLen.toString() + ";  "),
-                                        Text("Max. # of char.: " + state.loadedQuestionList[index].maxLen.toString() + ";"),
+                                        Text("Alloted time : " +
+                                            (state.loadedQuestionList[index].time / 60).toString() +
+                                            "min;  "),
+                                        Text("Min. # of char.: " +
+                                            state.loadedQuestionList[index].minLen.toString() +
+                                            ";  "),
+                                        Text("Max. # of char.: " +
+                                            state.loadedQuestionList[index].maxLen.toString() +
+                                            ";"),
                                         SizedBox(
                                           width: 20.0,
                                         ),
@@ -366,7 +498,10 @@ class _TeacherEntryFormState extends State<TeacherEntryForm> {
                                             backgroundColor: Colors.black,
                                             shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
                                             onPressed: () async {
-                                              db.collection('Tests').doc(state.loadedQuestionList[index].docID).delete();
+                                              db
+                                                  .collection('Tests')
+                                                  .doc(state.loadedQuestionList[index].docID)
+                                                  .delete();
                                               // getQuestionList();
                                             },
                                             label: Text('Delete Question', textScaleFactor: 0.6),
