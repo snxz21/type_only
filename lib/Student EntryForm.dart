@@ -230,10 +230,10 @@ class _StudentEntryFormState extends State<StudentEntryForm> {
                     padding: const EdgeInsets.fromLTRB(10, 1, 10, 5),
                     child: Row(
                       children: [
-                        Text('Time left $_minute minutes : $_second seconds',
+                        Text('Time left $_minute minutes: $_second seconds',
                         style: TextStyle(color: Colors.red)),
                         Visibility(visible: state.loadedQuestion.minLen >= uniqueAnswerController.text.length,
-                          child: Text('Symbols  left ${state.loadedQuestion.minLen-uniqueAnswerController.text.length}',
+                          child: Text('     # of symbols left to type before you can submit the answer: ${state.loadedQuestion.minLen-uniqueAnswerController.text.length}',
                               style: TextStyle(color: Colors.red)),
                         ),
                         // soobshenie na ekrane schetchika vremeni
